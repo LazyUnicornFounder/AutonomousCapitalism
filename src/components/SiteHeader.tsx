@@ -7,7 +7,7 @@ const SiteHeader = () => {
       <div className="container flex items-center justify-between py-4">
         <span className="text-muted-foreground text-sm font-body cursor-pointer">Got A Tip?</span>
         <h1 className="font-display text-4xl md:text-5xl font-black tracking-tight text-foreground italic">
-          AutoCapital
+          Autonomous Capitalism
         </h1>
         <span className="text-muted-foreground text-sm font-body cursor-pointer">Log In</span>
       </div>
