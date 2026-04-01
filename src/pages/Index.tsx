@@ -42,9 +42,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="container flex items-center justify-center py-6">
-          <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground italic">
-            Autonomous Capitalism
-          </h1>
+          <div className="text-center">
+            <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground italic">
+              Autonomous Capitalism
+            </h1>
+            <p className="text-muted-foreground font-body text-sm md:text-base mt-2 tracking-wide">
+              Live from X — the autonomous revolution in real time.
+            </p>
+          </div>
         </div>
       </header>
       <main className="container py-8 px-4">
