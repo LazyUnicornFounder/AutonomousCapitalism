@@ -44,7 +44,7 @@ const Index = () => {
         <div className="container flex items-center justify-center py-6">
           <div className="text-center">
             <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground italic">
-              <span className="bg-primary text-primary-foreground px-1 py-0.5 rounded-sm">Autonomous</span> Capitalism
+              <span className="bg-primary text-primary-foreground px-1 py-0 rounded-sm leading-none">Autonomous</span> Capitalism
             </h1>
             <p className="text-muted-foreground font-body text-sm md:text-base mt-2 tracking-wide">
               Live from X — the autonomous revolution in real time.
