@@ -3,6 +3,7 @@ export type Tweet = {
   handle: string;
   username: string;
   avatar: string;
+  avatarUrl?: string;
   content: string;
   timestamp: string;
   likes: number;
