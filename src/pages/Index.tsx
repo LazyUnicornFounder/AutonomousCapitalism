@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Twitter } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import TweetCard from "@/components/TweetCard";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
