@@ -36,7 +36,7 @@ const Index = () => {
     timestamp: formatTimestamp(t.timestamp),
   }));
 
-  const displayTweets = tweets.length > 0 ? tweets : mockTweets;
+  const displayTweets = tweets;
 
   return (
     <div className="min-h-screen bg-background">
