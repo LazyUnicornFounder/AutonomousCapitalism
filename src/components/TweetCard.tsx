@@ -24,9 +24,13 @@ const TweetCard = ({ tweet }: { tweet: Tweet }) => {
   return (
     <div className="bg-card border border-border p-4 break-inside-avoid mb-4 hover:bg-accent/30 transition-colors cursor-pointer">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground shrink-0 font-body">
-          {tweet.avatar}
-        </div>
+        {tweet.avatarUrl ? (
+          <img src={tweet.avatarUrl} alt={tweet.username} className="w-10 h-10 rounded-full shrink-0 object-cover" />
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground shrink-0 font-body">
+            {tweet.avatar}
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1 flex-wrap">
             <span className="font-bold text-sm text-foreground font-body">{tweet.username}</span>
