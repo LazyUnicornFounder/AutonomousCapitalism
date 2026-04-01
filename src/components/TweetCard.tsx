@@ -21,8 +21,16 @@ const highlightAutonomous = (text: string) => {
 };
 
 const TweetCard = ({ tweet }: { tweet: Tweet }) => {
+  const handleUsername = tweet.handle.replace('@', '');
+  const tweetUrl = `https://x.com/${handleUsername}/status/${tweet.id}`;
+
   return (
-    <div className="bg-card border border-border p-4 break-inside-avoid mb-4 hover:bg-accent/30 transition-colors cursor-pointer">
+    <a
+      href={tweetUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block bg-card border border-border p-4 break-inside-avoid mb-4 hover:bg-accent/30 transition-colors cursor-pointer no-underline"
+    >
       <div className="flex items-start gap-3">
         {tweet.avatarUrl ? (
           <img src={tweet.avatarUrl} alt={tweet.username} className="w-10 h-10 rounded-full shrink-0 object-cover" />
@@ -42,25 +50,25 @@ const TweetCard = ({ tweet }: { tweet: Tweet }) => {
             {highlightAutonomous(tweet.content)}
           </p>
           <div className="flex items-center gap-6 mt-3 text-muted-foreground">
-            <button className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors font-body">
+            <span className="flex items-center gap-1.5 text-xs font-body">
               <MessageCircle className="w-4 h-4" />
               {formatNumber(tweet.replies)}
-            </button>
-            <button className="flex items-center gap-1.5 text-xs hover:text-green-500 transition-colors font-body">
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-body">
               <Repeat2 className="w-4 h-4" />
               {formatNumber(tweet.retweets)}
-            </button>
-            <button className="flex items-center gap-1.5 text-xs hover:text-red-500 transition-colors font-body">
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-body">
               <Heart className="w-4 h-4" />
               {formatNumber(tweet.likes)}
-            </button>
-            <button className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors font-body">
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-body">
               <Share className="w-4 h-4" />
-            </button>
+            </span>
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 
