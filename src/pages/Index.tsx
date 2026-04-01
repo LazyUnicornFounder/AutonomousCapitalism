@@ -3,7 +3,6 @@ import { Loader2 } from "lucide-react";
 import TweetCard from "@/components/TweetCard";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
-import { Loader2 } from "lucide-react";
 
 const fetchTweets = async (): Promise<Tweet[]> => {
   const { data, error } = await supabase.functions.invoke("twitter-search", {
