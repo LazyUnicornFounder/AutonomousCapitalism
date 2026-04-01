@@ -68,6 +68,11 @@ const Index = () => {
           </p>
         )}
         <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
+          <div className="break-inside-avoid mb-4 border border-dashed border-primary/40 bg-primary/5 p-6 flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-primary font-display text-lg font-bold tracking-tight">Next tweet incoming…</span>
+            <span className="text-muted-foreground font-body text-sm">A new post from the autonomous revolution will appear here shortly.</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse mt-1" />
+          </div>
           {displayTweets.map((tweet) => (
             <TweetCard key={tweet.id} tweet={tweet} />
           ))}
