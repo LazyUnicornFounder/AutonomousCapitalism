@@ -74,7 +74,7 @@ const Index = () => {
           ))}
         </div>
       </main>
-      <footer className="border-t border-border py-8">
+      <footer id="about" className="border-t border-border py-8">
         <div className="container text-center">
           <p className="text-muted-foreground font-body text-sm">
             Autonomous Capitalism is part of{" "}
