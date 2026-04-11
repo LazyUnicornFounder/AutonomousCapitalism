@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
 
     // Fetch tweets with pagination
     console.log("Fetching all tweets for blog generation...");
-    const tweets = await fetchAllTweets(bearerToken, "autonomous");
+    const tweets = await fetchAllTweets(bearerToken, "autonomous", 500);
 
     if (tweets.length === 0) {
       return new Response(
