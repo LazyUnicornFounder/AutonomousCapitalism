@@ -21,7 +21,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex flex-col gap-1.5 border-l-2 border-primary/30 pl-3 py-1 w-[300px] shrink-0 hover:border-primary transition-colors cursor-pointer no-underline group"
+      className="inline-flex flex-col gap-1.5 border-l-2 border-primary/30 pl-3 py-1 w-[400px] shrink-0 hover:border-primary transition-colors cursor-pointer no-underline group"
     >
       <div className="flex items-center gap-1.5">
         {tweet.avatarUrl ? (
@@ -37,7 +37,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
         {tweet.verified && <BadgeCheck className="w-3 h-3 text-primary/60 shrink-0" />}
         <span className="text-muted-foreground/50 text-xs font-body shrink-0">· {tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/70 text-[13px] leading-snug font-body line-clamp-2 group-hover:text-foreground/90 transition-colors">
+      <p className="text-foreground/70 text-[13px] leading-snug font-body break-words group-hover:text-foreground/90 transition-colors">
         {highlightAutonomous(tweet.content)}
       </p>
     </a>
