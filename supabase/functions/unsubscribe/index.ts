@@ -36,22 +36,13 @@ Deno.serve(async (req) => {
       throw new Error("Failed to unsubscribe");
     }
 
-    // Return a simple HTML page confirming unsubscribe
-    const html = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Unsubscribed</title></head>
-<body style="margin:0;padding:40px 20px;background:#000;color:#fff;font-family:Inter,Arial,sans-serif;text-align:center;">
-  <h1 style="font-family:Montserrat,Arial,sans-serif;font-size:28px;font-weight:900;">
-    <span style="color:#0099ff;">Autonomous</span> Capitalism
-  </h1>
-  <p style="color:#888;margin-top:40px;font-size:18px;">You've been unsubscribed.</p>
-  <p style="color:#666;font-size:14px;">We're sorry to see you go. You can always resubscribe at
-    <a href="https://auto-capital-chronicle.lovable.app" style="color:#0099ff;">our site</a>.
-  </p>
-</body></html>`;
-
-    return new Response(html, {
-      headers: { ...corsHeaders, "Content-Type": "text/html" },
+    // Redirect to confirmation page on the site
+    return new Response(null, {
+      status: 302,
+      headers: {
+        ...corsHeaders,
+        Location: "https://auto-capital-chronicle.lovable.app/unsubscribed",
+      },
     });
   } catch (error) {
     console.error("Error:", error);
