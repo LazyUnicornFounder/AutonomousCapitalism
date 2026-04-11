@@ -42,18 +42,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
-        <div className="container relative flex items-center justify-center py-4">
-          <div className="absolute left-4 top-4 flex items-center gap-4">
-            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-body">About</a>
-            <a href="/blog" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-body">Autonomous Dispatch</a>
-            <a href="#live" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-body">Live from 𝕏</a>
-          </div>
+        <div className="container flex flex-col items-center py-4 relative">
           <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="absolute right-4 top-4 text-muted-foreground hover:text-foreground transition-colors">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
           <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
+          <nav className="flex items-center gap-5 mt-3">
+            <a href="#about" className="text-foreground hover:text-primary transition-colors text-sm font-body">About</a>
+            <a href="/blog" className="text-foreground hover:text-primary transition-colors text-sm font-body">Autonomous Dispatch</a>
+            <a href="#live" className="text-foreground hover:text-primary transition-colors text-sm font-body">Live from 𝕏</a>
+          </nav>
         </div>
       </header>
 
