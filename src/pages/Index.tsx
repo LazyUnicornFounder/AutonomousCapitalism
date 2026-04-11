@@ -42,28 +42,41 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
-        <div className="container relative flex items-center justify-center py-6">
-          <div className="absolute left-4 top-6 flex items-center gap-4">
+        <div className="container relative flex items-center justify-center py-4">
+          <div className="absolute left-4 top-4 flex items-center gap-4">
             <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-body">About</a>
             <a href="/blog" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-body">Daily Dispatch</a>
           </div>
-          <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="absolute right-4 top-6 text-muted-foreground hover:text-foreground transition-colors">
+          <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="absolute right-4 top-4 text-muted-foreground hover:text-foreground transition-colors">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <div className="text-center">
-            <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground">
-              <span className="text-primary">Autonomous</span> Capitalism
-            </h1>
-            <p className="text-primary font-body text-xl md:text-2xl mt-6 tracking-wide flex items-center justify-center gap-2">
-              Live from <svg className="w-6 h-6 md:w-7 md:h-7 fill-primary" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> — Follow the autonomous revolution in real time.
-            </p>
-          </div>
+          <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
+            <span className="text-primary">Autonomous</span> Capitalism
+          </h1>
         </div>
       </header>
-      <div className="container px-4 py-6">
-        <EmailCapture variant="hero" />
-      </div>
-      <main className="container py-8 px-4">
+
+      {/* Hero — Email capture CTA */}
+      <section className="border-b border-border py-16 md:py-24">
+        <div className="container px-4 max-w-2xl mx-auto text-center">
+          <h2 className="font-display font-black text-4xl md:text-6xl leading-none tracking-tight text-foreground mb-6">
+            The <span className="text-primary">autonomous</span> revolution,<br />delivered daily.
+          </h2>
+          <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed mb-8 max-w-lg mx-auto">
+            Every morning, AI reads hundreds of posts and writes you one sharp, story-driven briefing on what machines are doing in business, finance, and society.
+          </p>
+          <EmailCapture variant="hero" />
+        </div>
+      </section>
+
+      {/* Live feed */}
+      <section className="container py-8 px-4">
+        <div className="flex items-center gap-3 mb-6">
+          <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <h3 className="font-display font-bold text-lg text-foreground">Live from
+            <svg className="w-5 h-5 fill-primary inline ml-1.5 -mt-0.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </h3>
+        </div>
         {isLoading && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
@@ -83,7 +96,8 @@ const Index = () => {
         <div className="mt-8">
           <EmailCapture variant="default" />
         </div>
-      </main>
+      </section>
+
       <footer id="about" className="border-t border-border py-8">
         <div className="container text-center">
           <p className="text-muted-foreground font-body text-sm">
