@@ -4,12 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const fetchSubscriberCount = async (): Promise<number> => {
-  const { count, error } = await supabase
-    .from("subscribers")
-    .select("*", { count: "exact", head: true })
-    .eq("is_active", true);
+  const { data, error } = await supabase.rpc("get_active_subscriber_count");
   if (error) throw error;
-  return count || 0;
+  return data || 0;
 };
 
 const EmailCapture = ({ variant = "default" }: { variant?: "default" | "compact" | "hero" }) => {
