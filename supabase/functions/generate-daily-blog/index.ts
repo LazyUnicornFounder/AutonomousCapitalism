@@ -170,22 +170,42 @@ Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look 
       await supabase.from("blog_posts").delete().eq("published_date", today);
     }
 
-    const { error: insertError } = await supabase.from("blog_posts").insert({
+    const { data: insertedPost, error: insertError } = await supabase.from("blog_posts").insert({
       title,
       content: body,
       summary,
       tweet_count: tweets.length,
       published_date: today,
-    });
+    }).select("id").single();
 
     if (insertError) {
       console.error("Insert error:", insertError);
       throw new Error(`Failed to save blog post: ${insertError.message}`);
     }
 
+    // Trigger email dispatch to subscribers
+    console.log("Triggering email dispatch...");
+    try {
+      const dispatchRes = await fetch(
+        `${supabaseUrl}/functions/v1/send-dispatch`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${serviceKey}`,
+          },
+          body: JSON.stringify({ postId: insertedPost.id }),
+        }
+      );
+      const dispatchData = await dispatchRes.json();
+      console.log("Dispatch result:", JSON.stringify(dispatchData));
+    } catch (e) {
+      console.error("Failed to trigger dispatch (non-fatal):", e);
+    }
+
     console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
-      JSON.stringify({ message: "Blog post generated", title, tweet_count: tweets.length }),
+      JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
