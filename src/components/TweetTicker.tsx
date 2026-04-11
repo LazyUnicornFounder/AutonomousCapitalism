@@ -21,7 +21,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex flex-col gap-2 bg-card/50 backdrop-blur-sm border border-border/40 rounded-lg px-4 py-3 w-[320px] shrink-0 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 cursor-pointer no-underline group"
+      className="inline-flex flex-col gap-2 bg-card/50 backdrop-blur-sm border-2 border-border/40 rounded-lg px-4 py-3 w-[320px] shrink-0 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 cursor-pointer no-underline group"
     >
       <div className="flex items-center gap-2 min-w-0">
         {tweet.avatarUrl ? (
