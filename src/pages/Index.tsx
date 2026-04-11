@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import TweetCard from "@/components/TweetCard";
+import EmailCapture from "@/components/EmailCapture";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
 
@@ -59,6 +60,9 @@ const Index = () => {
           </div>
         </div>
       </header>
+      <div className="container px-4 py-6">
+        <EmailCapture variant="hero" />
+      </div>
       <main className="container py-8 px-4">
         {isLoading && (
           <div className="flex items-center justify-center py-12">
@@ -75,6 +79,9 @@ const Index = () => {
           {displayTweets.map((tweet) => (
             <TweetCard key={tweet.id} tweet={tweet} />
           ))}
+        </div>
+        <div className="mt-8">
+          <EmailCapture variant="default" />
         </div>
       </main>
       <footer id="about" className="border-t border-border py-8">
