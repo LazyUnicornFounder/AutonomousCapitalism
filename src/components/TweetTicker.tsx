@@ -36,7 +36,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
         <span className="text-muted-foreground text-xs font-body truncate">{tweet.handle}</span>
         <span className="text-muted-foreground text-xs font-body shrink-0">· {tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/90 text-sm leading-snug font-body line-clamp-3 break-words">
+      <p className="text-foreground/90 text-sm leading-snug font-body break-words">
         {highlightAutonomous(tweet.content)}
       </p>
     </a>
