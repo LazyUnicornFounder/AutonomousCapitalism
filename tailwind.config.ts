@@ -88,6 +88,10 @@ export default {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(-50%)" },
         },
+        "ticker-down": {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -95,6 +99,7 @@ export default {
         "ticker-left": "ticker-left var(--ticker-speed, 40s) linear infinite",
         "ticker-right": "ticker-right var(--ticker-speed, 40s) linear infinite",
         "ticker-up": "ticker-up var(--ticker-speed, 60s) linear infinite",
+        "ticker-down": "ticker-down var(--ticker-speed, 60s) linear infinite",
       },
     },
   },
