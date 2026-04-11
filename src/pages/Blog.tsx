@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
+import EmailCapture from "@/components/EmailCapture";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
@@ -88,6 +89,9 @@ const Blog = () => {
               )}
             </Link>
           ))}
+        </div>
+        <div className="mt-8">
+          <EmailCapture variant="default" />
         </div>
       </main>
 
