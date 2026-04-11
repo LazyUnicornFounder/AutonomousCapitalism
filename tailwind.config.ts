@@ -84,12 +84,17 @@ export default {
           "0%": { transform: "translateX(-50%)" },
           "100%": { transform: "translateX(0)" },
         },
+        "ticker-up": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "ticker-left": "ticker-left var(--ticker-speed, 40s) linear infinite",
         "ticker-right": "ticker-right var(--ticker-speed, 40s) linear infinite",
+        "ticker-up": "ticker-up var(--ticker-speed, 60s) linear infinite",
       },
     },
   },
