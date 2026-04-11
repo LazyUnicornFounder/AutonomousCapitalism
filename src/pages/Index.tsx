@@ -62,7 +62,7 @@ const Index = () => {
       <section className="border-b border-border min-h-[calc(100vh-64px)] flex items-center py-16 md:py-24 overflow-hidden">
         <div className="flex w-full px-6 md:px-24 gap-12">
           {/* Left: headline + CTA */}
-          <div className="md:w-1/2 text-left flex-shrink-0">
+          <div className="md:w-1/2 text-left flex-shrink-0 flex flex-col justify-center">
             <h2 className="font-display font-black text-4xl md:text-5xl leading-none tracking-tight text-foreground mb-6">
               The <span className="text-primary">autonomous</span> revolution.<br />Delivered daily.
             </h2>
