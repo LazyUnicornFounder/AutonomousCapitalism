@@ -52,10 +52,6 @@ const Index = () => {
           <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
-          <nav className="flex items-center gap-5 mt-3">
-            <a href="#about" className="text-foreground hover:text-primary transition-colors text-sm font-body">About</a>
-            <a href="/blog" className="text-foreground hover:text-primary transition-colors text-sm font-body">Autonomous Dispatch</a>
-          </nav>
         </div>
       </header>
 
