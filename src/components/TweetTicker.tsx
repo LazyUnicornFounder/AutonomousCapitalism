@@ -5,7 +5,7 @@ const highlightAutonomous = (text: string) => {
   const parts = text.split(/(autonomous)/gi);
   return parts.map((part, i) =>
     part.toLowerCase() === "autonomous" ? (
-      <span key={i} className="text-primary font-bold">{part}</span>
+      <span key={i} className="text-primary">{part}</span>
     ) : (
       part
     )
@@ -21,22 +21,23 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex flex-col gap-2 bg-card border border-border p-4 w-[340px] shrink-0 hover:bg-accent/30 transition-colors cursor-pointer no-underline rounded-sm"
+      className="inline-flex flex-col gap-1.5 border-l-2 border-primary/30 pl-3 py-1 w-[300px] shrink-0 hover:border-primary transition-colors cursor-pointer no-underline group"
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         {tweet.avatarUrl ? (
-          <img src={tweet.avatarUrl} alt={tweet.username} className="w-6 h-6 rounded-full object-cover" />
+          <img src={tweet.avatarUrl} alt={tweet.username} className="w-4 h-4 rounded-full object-cover opacity-70" />
         ) : (
-          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground font-body">
+          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center text-[8px] font-bold text-muted-foreground font-body">
             {tweet.avatar}
           </div>
         )}
-        <span className="font-bold text-xs text-foreground font-body truncate">{tweet.username}</span>
-        {tweet.verified && <BadgeCheck className="w-3.5 h-3.5 text-primary shrink-0" />}
-        <span className="text-muted-foreground text-xs font-body truncate">{tweet.handle}</span>
-        <span className="text-muted-foreground text-xs font-body shrink-0">· {tweet.timestamp}</span>
+        <span className="text-xs text-muted-foreground font-body truncate">
+          {tweet.handle}
+        </span>
+        {tweet.verified && <BadgeCheck className="w-3 h-3 text-primary/60 shrink-0" />}
+        <span className="text-muted-foreground/50 text-xs font-body shrink-0">· {tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/90 text-sm leading-snug font-body break-words">
+      <p className="text-foreground/70 text-[13px] leading-snug font-body line-clamp-2 group-hover:text-foreground/90 transition-colors">
         {highlightAutonomous(tweet.content)}
       </p>
     </a>
@@ -50,17 +51,15 @@ type TweetTickerRowProps = {
 };
 
 const TweetTickerRow = ({ tweets, direction, speed = 40 }: TweetTickerRowProps) => {
-  // Double the tweets for seamless looping
   const items = [...tweets, ...tweets];
   const animationClass = direction === "left" ? "animate-ticker-left" : "animate-ticker-right";
 
   return (
     <div className="overflow-hidden relative">
-      {/* Fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-background to-transparent" />
       <div
-        className={`flex gap-4 ${animationClass}`}
+        className={`flex gap-6 ${animationClass}`}
         style={{ ["--ticker-speed" as string]: `${speed}s` }}
       >
         {items.map((tweet, i) => (
@@ -76,14 +75,13 @@ type TweetTickerProps = {
 };
 
 const TweetTicker = ({ tweets }: TweetTickerProps) => {
-  // Split tweets into 3 rows
   const third = Math.ceil(tweets.length / 3);
   const row1 = tweets.slice(0, third);
   const row2 = tweets.slice(third, third * 2);
   const row3 = tweets.slice(third * 2);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4 opacity-60 hover:opacity-90 transition-opacity duration-500">
       <TweetTickerRow tweets={row1} direction="left" speed={50} />
       <TweetTickerRow tweets={row2} direction="right" speed={45} />
       <TweetTickerRow tweets={row3} direction="left" speed={55} />
