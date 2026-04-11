@@ -99,7 +99,7 @@ Deno.serve(async (req) => {
           <h1 style="margin:0;font-family:Montserrat,Arial,sans-serif;font-size:28px;font-weight:900;color:#fff;">
             <span style="color:#0099ff;">Autonomous</span> Capitalism
           </h1>
-          <p style="margin:8px 0 0;font-size:12px;color:#888;letter-spacing:2px;text-transform:uppercase;">AUTONOMOUS DISPATCH</p>
+          <p style="margin:8px 0 0;font-size:12px;color:#888;letter-spacing:2px;text-transform:uppercase;">DAILY AUTONOMOUS BRIEFINGS</p>
         </td></tr>
         <tr><td style="border-top:2px solid #0099ff;padding-top:30px;">
           <h2 style="margin:0 0 20px;font-family:Montserrat,Arial,sans-serif;font-size:24px;font-weight:900;color:#fff;line-height:1.2;">
