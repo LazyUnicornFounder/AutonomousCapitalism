@@ -60,7 +60,7 @@ const Index = () => {
 
       {/* Hero — Email capture CTA + Tweet Tickers */}
       <section className="border-b border-border min-h-[calc(100vh-64px)] flex flex-col justify-center py-16 md:py-24">
-        <div className="container px-4 max-w-3xl mx-auto text-center mb-12">
+        <div className="px-4 max-w-3xl mx-auto text-center mb-12">
           <h2 className="font-display font-black text-4xl md:text-6xl leading-none tracking-tight text-foreground mb-6">
             <span className="whitespace-nowrap">The <span className="text-primary">autonomous</span> revolution.</span><br />Delivered daily.
           </h2>
