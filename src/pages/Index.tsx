@@ -63,7 +63,7 @@ const Index = () => {
       <section className="border-b border-border min-h-[calc(100vh-56px)] flex items-center py-12 md:py-24 overflow-hidden">
         <div className="flex w-full px-4 md:px-24 gap-6">
           {/* Left: headline + CTA */}
-          <div className="w-full md:w-2/5 text-left flex-shrink-0 flex flex-col justify-center">
+          <div className="w-full md:w-1/2 text-left flex-shrink-0 flex flex-col justify-center">
             <h2 className="font-display font-black text-3xl md:text-5xl leading-tight tracking-tight text-foreground mb-6">
               <span className="text-primary">Autonomous</span> news.<br />Delivered daily.
             </h2>
@@ -74,7 +74,7 @@ const Index = () => {
           </div>
 
           {/* Right: vertical tweet ticker */}
-          <div className="hidden md:flex md:flex-1">
+          <div className="hidden md:block w-[45%] flex-shrink-0">
             {isLoading && (
               <div className="flex items-center justify-center h-[calc(100vh-200px)]">
                 <span className="text-3xl animate-spin inline-block">🤖</span>
