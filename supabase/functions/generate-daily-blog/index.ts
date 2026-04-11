@@ -6,6 +6,54 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+async function fetchAllTweets(bearerToken: string, query: string, maxTotal = 200) {
+  const allTweets: any[] = [];
+  const users: Record<string, any> = {};
+  let nextToken: string | undefined;
+
+  while (allTweets.length < maxTotal) {
+    const twitterUrl = new URL("https://api.x.com/2/tweets/search/recent");
+    twitterUrl.searchParams.set("query", `${query} -is:retweet lang:en`);
+    twitterUrl.searchParams.set("max_results", "100");
+    twitterUrl.searchParams.set("tweet.fields", "created_at,public_metrics,author_id");
+    twitterUrl.searchParams.set("expansions", "author_id");
+    twitterUrl.searchParams.set("user.fields", "name,username");
+    if (nextToken) twitterUrl.searchParams.set("next_token", nextToken);
+
+    const res = await fetch(twitterUrl.toString(), {
+      headers: { Authorization: `Bearer ${bearerToken}` },
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("Twitter API error:", JSON.stringify(data));
+      throw new Error(`Twitter API error: ${data.detail || data.title}`);
+    }
+
+    if (data.includes?.users) {
+      for (const u of data.includes.users) users[u.id] = u;
+    }
+
+    if (data.data) {
+      for (const t of data.data) {
+        const user = users[t.author_id] || {};
+        allTweets.push({
+          text: t.text,
+          author: user.name || "Unknown",
+          handle: `@${user.username || "unknown"}`,
+          likes: t.public_metrics?.like_count || 0,
+          retweets: t.public_metrics?.retweet_count || 0,
+        });
+      }
+    }
+
+    nextToken = data.meta?.next_token;
+    if (!nextToken || !data.data?.length) break;
+  }
+
+  return allTweets;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -22,55 +70,29 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    // Check if we already generated today's post
+    // Check for force flag
+    const url = new URL(req.url);
+    const force = url.searchParams.get("force") === "true";
     const today = new Date().toISOString().split("T")[0];
-    const { data: existing } = await supabase
-      .from("blog_posts")
-      .select("id")
-      .eq("published_date", today)
-      .maybeSingle();
 
-    if (existing) {
-      return new Response(
-        JSON.stringify({ message: "Blog post already exists for today" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (!force) {
+      const { data: existing } = await supabase
+        .from("blog_posts")
+        .select("id")
+        .eq("published_date", today)
+        .maybeSingle();
+
+      if (existing) {
+        return new Response(
+          JSON.stringify({ message: "Blog post already exists for today" }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
-    // Fetch recent tweets about "autonomous"
-    const twitterUrl = new URL("https://api.x.com/2/tweets/search/recent");
-    twitterUrl.searchParams.set("query", "autonomous -is:retweet lang:en");
-    twitterUrl.searchParams.set("max_results", "50");
-    twitterUrl.searchParams.set("tweet.fields", "created_at,public_metrics,author_id");
-    twitterUrl.searchParams.set("expansions", "author_id");
-    twitterUrl.searchParams.set("user.fields", "name,username");
-
-    console.log("Fetching tweets for blog generation...");
-    const twitterRes = await fetch(twitterUrl.toString(), {
-      headers: { Authorization: `Bearer ${bearerToken}` },
-    });
-
-    const twitterData = await twitterRes.json();
-    if (!twitterRes.ok) {
-      console.error("Twitter API error:", JSON.stringify(twitterData));
-      throw new Error(`Twitter API error: ${twitterData.detail || twitterData.title}`);
-    }
-
-    const users: Record<string, any> = {};
-    if (twitterData.includes?.users) {
-      for (const u of twitterData.includes.users) users[u.id] = u;
-    }
-
-    const tweets = (twitterData.data || []).map((t: any) => {
-      const user = users[t.author_id] || {};
-      return {
-        text: t.text,
-        author: user.name || "Unknown",
-        handle: `@${user.username || "unknown"}`,
-        likes: t.public_metrics?.like_count || 0,
-        retweets: t.public_metrics?.retweet_count || 0,
-      };
-    });
+    // Fetch tweets with pagination
+    console.log("Fetching all tweets for blog generation...");
+    const tweets = await fetchAllTweets(bearerToken, "autonomous");
 
     if (tweets.length === 0) {
       return new Response(
@@ -78,6 +100,11 @@ Deno.serve(async (req) => {
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    console.log(`Collected ${tweets.length} tweets, generating blog...`);
+
+    // Sort by engagement
+    tweets.sort((a, b) => (b.likes + b.retweets) - (a.likes + a.retweets));
 
     // Build tweet digest for AI
     const tweetDigest = tweets
@@ -104,17 +131,18 @@ Deno.serve(async (req) => {
               content: `You are a sharp, witty journalist writing for "Autonomous Capitalism" — a publication tracking the rise of autonomous systems in business, finance, and society. Write in a narrative, story-driven style. Think New Yorker meets Wired. Use vivid language, connect themes across tweets, and weave them into a cohesive daily narrative. The tone is smart, slightly irreverent, and forward-looking.
 
 Format:
-- Start with a compelling headline (ALL CAPS)
-- Write 4-8 paragraphs of narrative prose
-- Reference specific tweets/voices naturally woven into the story (mention handles)
+- Start with a compelling headline (ALL CAPS, on its own line, no markdown heading syntax)
+- Write 6-10 paragraphs of narrative prose
+- Reference specific tweets/voices naturally woven into the story (mention @handles)
+- Group themes: technology breakthroughs, market impacts, labor disruption, policy debates, cultural reactions
 - End with a thought-provoking closing line
-- Use markdown formatting
+- Use markdown for bold and italic emphasis
 
-Do NOT list tweets. Tell a STORY.`,
+Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look forward to.`,
             },
             {
               role: "user",
-              content: `Here are today's ${tweets.length} tweets about autonomous systems. Write today's daily blog post:\n\n${tweetDigest}`,
+              content: `Here are today's ${tweets.length} tweets about autonomous systems, sorted by engagement. Write today's daily blog post:\n\n${tweetDigest}`,
             },
           ],
         }),
@@ -137,7 +165,11 @@ Do NOT list tweets. Tell a STORY.`,
     const body = lines.slice(1).join("\n").trim();
     const summary = body.substring(0, 300).replace(/\n/g, " ").trim() + "…";
 
-    // Store in database
+    if (force) {
+      // Delete existing post for today before inserting
+      await supabase.from("blog_posts").delete().eq("published_date", today);
+    }
+
     const { error: insertError } = await supabase.from("blog_posts").insert({
       title,
       content: body,
@@ -151,7 +183,7 @@ Do NOT list tweets. Tell a STORY.`,
       throw new Error(`Failed to save blog post: ${insertError.message}`);
     }
 
-    console.log("Daily blog post generated successfully");
+    console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
       JSON.stringify({ message: "Blog post generated", title, tweet_count: tweets.length }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
