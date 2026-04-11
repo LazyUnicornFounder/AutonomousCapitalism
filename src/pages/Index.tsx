@@ -32,10 +32,12 @@ const Index = () => {
     refetchInterval: 60000,
   });
 
-  const tweets = (liveTweets || []).map((t) => ({
-    ...t,
-    timestamp: formatTimestamp(t.timestamp),
-  }));
+  const tweets = (liveTweets || [])
+    .filter((t) => /autonomous/i.test(t.content))
+    .map((t) => ({
+      ...t,
+      timestamp: formatTimestamp(t.timestamp),
+    }));
 
   return (
     <div className="min-h-screen bg-background">
