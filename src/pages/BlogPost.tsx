@@ -44,7 +44,7 @@ const renderMarkdown = (text: string) => {
     const parts = p.split(/(\*\*.*?\*\*|_.*?_|@\w+)/g);
     const rendered = parts.map((part, j) => {
       if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={j}>{part.slice(2, -2)}</strong>;
+        return <span key={j}>{part.slice(2, -2)}</span>;
       }
       if (part.startsWith("_") && part.endsWith("_")) {
         return <em key={j}>{part.slice(1, -1)}</em>;
