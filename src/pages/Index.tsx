@@ -42,7 +42,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header>
-        <div className="flex items-center justify-between py-6 px-6 md:px-12">
+        <div className="flex items-center justify-between py-6 px-12 md:px-24">
           <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
@@ -60,7 +60,7 @@ const Index = () => {
 
       {/* Hero — Email capture CTA + Tweet Tickers */}
       <section className="border-b border-border min-h-[calc(100vh-64px)] flex flex-col justify-center py-16 md:py-24">
-        <div className="px-6 md:px-12 max-w-4xl text-left mb-12">
+        <div className="px-12 md:px-24 max-w-4xl text-left mb-12">
           <h2 className="font-display font-black text-4xl md:text-6xl leading-none tracking-tight text-foreground mb-6">
             <span className="whitespace-nowrap">The <span className="text-primary">autonomous</span> revolution.</span><br />Delivered daily.
           </h2>

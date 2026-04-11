@@ -84,7 +84,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-background">
       <header>
-        <div className="flex items-center justify-between py-6 px-6 md:px-12">
+        <div className="flex items-center justify-between py-6 px-12 md:px-24">
           <Link to="/" className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground hover:text-primary transition-colors">
             <span className="text-primary">Autonomous</span> Capitalism
           </Link>
