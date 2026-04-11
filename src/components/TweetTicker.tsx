@@ -68,7 +68,7 @@ const TweetTicker = ({ tweets }: TweetTickerProps) => {
       {/* Bottom fade */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-background to-transparent" />
       <div
-        className="flex flex-col gap-1 animate-ticker-up"
+        className="flex flex-col gap-4 animate-ticker-up"
         style={{ ["--ticker-speed" as string]: "180s" }}
       >
         {items.map((tweet, i) => (
