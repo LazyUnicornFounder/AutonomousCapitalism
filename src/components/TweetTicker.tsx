@@ -31,7 +31,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="block border-l-2 border-border/40 pl-3 py-2 hover:border-primary/50 transition-all duration-300 cursor-pointer no-underline group"
+      className="block pl-3 py-2 hover:border-primary/50 transition-all duration-300 cursor-pointer no-underline group"
     >
       <div className="flex items-center gap-1.5 mb-1">
         {tweet.avatarUrl ? (
