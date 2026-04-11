@@ -113,8 +113,8 @@ const Index = () => {
           </h2>
           <p className="text-muted-foreground font-body text-lg leading-relaxed">
             Autonomous Capitalism is part of{" "}
-            <a href="https://lazyfactoryventures.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">
-              Lazy Factory Ventures
+            <a href="https://lazyfounderventures.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">
+              Lazy Founder Ventures
             </a>
           </p>
         </div>
