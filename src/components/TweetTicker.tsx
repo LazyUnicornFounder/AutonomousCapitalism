@@ -21,23 +21,23 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex flex-col gap-1.5 border-l-2 border-primary/30 pl-3 py-1 w-[400px] shrink-0 hover:border-primary transition-colors cursor-pointer no-underline group"
+      className="inline-flex flex-col gap-2 bg-card/50 backdrop-blur-sm border border-border/40 rounded-lg px-4 py-3 w-[320px] shrink-0 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 cursor-pointer no-underline group"
     >
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2 min-w-0">
         {tweet.avatarUrl ? (
-          <img src={tweet.avatarUrl} alt={tweet.username} className="w-4 h-4 rounded-full object-cover opacity-70" />
+          <img src={tweet.avatarUrl} alt={tweet.username} className="w-5 h-5 rounded-full object-cover ring-1 ring-border/50" />
         ) : (
-          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center text-[8px] font-bold text-muted-foreground font-body">
+          <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold text-muted-foreground font-body">
             {tweet.avatar}
           </div>
         )}
-        <span className="text-xs text-muted-foreground font-body truncate">
+        <span className="text-[11px] text-foreground/60 font-body font-medium truncate">
           {tweet.handle}
         </span>
-        {tweet.verified && <BadgeCheck className="w-3 h-3 text-primary/60 shrink-0" />}
-        <span className="text-muted-foreground/50 text-xs font-body shrink-0">· {tweet.timestamp}</span>
+        {tweet.verified && <BadgeCheck className="w-3 h-3 text-primary/50 shrink-0" />}
+        <span className="text-foreground/30 text-[11px] font-body shrink-0 ml-auto">{tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/70 text-[13px] leading-snug font-body break-words group-hover:text-foreground/90 transition-colors">
+      <p className="text-foreground/60 text-[13px] leading-relaxed font-body break-words group-hover:text-foreground/80 transition-colors line-clamp-3">
         {highlightAutonomous(tweet.content)}
       </p>
     </a>
@@ -56,10 +56,10 @@ const TweetTickerRow = ({ tweets, direction, speed = 40 }: TweetTickerRowProps) 
 
   return (
     <div className="overflow-hidden relative">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-background to-transparent" />
       <div
-        className={`flex gap-6 ${animationClass}`}
+        className={`flex gap-3 ${animationClass}`}
         style={{ ["--ticker-speed" as string]: `${speed}s` }}
       >
         {items.map((tweet, i) => (
@@ -81,7 +81,7 @@ const TweetTicker = ({ tweets }: TweetTickerProps) => {
   const row3 = tweets.slice(third * 2);
 
   return (
-    <div className="flex flex-col gap-4 opacity-60 hover:opacity-90 transition-opacity duration-500">
+    <div className="flex flex-col gap-3">
       <TweetTickerRow tweets={row1} direction="left" speed={50} />
       <TweetTickerRow tweets={row2} direction="right" speed={45} />
       <TweetTickerRow tweets={row3} direction="left" speed={55} />
