@@ -73,7 +73,7 @@ const Index = () => {
           </div>
 
           {/* Right: vertical tweet ticker */}
-          <div className="hidden md:block flex-1 min-w-0">
+          <div className="hidden md:block w-[375px] flex-shrink-0">
             {isLoading && (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
