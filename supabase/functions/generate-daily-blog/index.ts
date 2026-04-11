@@ -191,12 +191,12 @@ Deno.serve(async (req) => {
 Format:
 - Start with a compelling headline (ALL CAPS, on its own line, no markdown heading syntax)
 - Write 6-10 paragraphs of narrative prose
-- Reference specific tweets/voices naturally woven into the story (mention @handles)
+- Do NOT mention any Twitter/X handles or usernames — refer to people by name or role only
 - Group themes: technology breakthroughs, market impacts, labor disruption, policy debates, cultural reactions
 - End with a thought-provoking closing line
 - Use markdown for bold and italic emphasis
 
-Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look forward to.`,
+Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily column readers look forward to.`,
             },
             {
               role: "user",
