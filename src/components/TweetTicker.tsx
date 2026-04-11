@@ -41,13 +41,13 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
             {tweet.avatar}
           </div>
         )}
-        <span className="text-[11px] text-foreground/40 font-body truncate group-hover:text-foreground transition-colors">
+        <span className="text-xs text-foreground/40 font-body truncate group-hover:text-foreground transition-colors">
           {tweet.handle}
         </span>
-        {tweet.verified && <BadgeCheck className="w-3 h-3 text-primary/40 shrink-0" />}
-        <span className="text-foreground/20 text-[11px] font-body shrink-0 ml-auto group-hover:text-foreground transition-colors">{tweet.timestamp}</span>
+        {tweet.verified && <BadgeCheck className="w-4 h-4 text-primary/40 shrink-0" />}
+        <span className="text-foreground/20 text-xs font-body shrink-0 ml-auto group-hover:text-foreground transition-colors">{tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/50 text-[12px] leading-relaxed font-body break-words group-hover:text-foreground transition-colors">
+      <p className="text-foreground/50 text-sm leading-relaxed font-body break-words group-hover:text-foreground transition-colors">
         {highlightAutonomous(trimAfterAutonomous(tweet.content))}
       </p>
     </a>
