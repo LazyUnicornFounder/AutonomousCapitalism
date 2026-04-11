@@ -150,16 +150,16 @@ const BlogPost = () => {
         </div>
       </main>
 
-      <footer className="border-t border-border py-8 mt-12">
-        <div className="container text-center">
-          <p className="text-muted-foreground font-body text-sm">
+      <section id="about" className="border-t border-border py-16 md:py-24">
+        <div className="container px-4 max-w-2xl mx-auto text-center">
+          <p className="text-muted-foreground font-body text-lg leading-relaxed">
             Autonomous Capitalism is part of{" "}
-            <a href="https://lazyfounderventures.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            <a href="https://lazyfounderventures.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">
               Lazy Founder Ventures
             </a>
           </p>
         </div>
-      </footer>
+      </section>
     </div>
   );
 };
