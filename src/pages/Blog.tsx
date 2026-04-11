@@ -39,7 +39,7 @@ const Blog = () => {
           </Link>
           <div className="text-center">
             <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground">
-              <span className="text-primary">Daily</span> Dispatch
+              <span className="text-primary">Autonomous</span> Dispatch
             </h1>
             <p className="text-muted-foreground font-body text-sm mt-2 tracking-wide">
               AI-generated story summaries of the autonomous revolution
