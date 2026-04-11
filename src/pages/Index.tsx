@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
 import TweetTicker from "@/components/TweetTicker";
 import EmailCapture from "@/components/EmailCapture";
 import { supabase } from "@/integrations/supabase/client";
@@ -77,7 +76,7 @@ const Index = () => {
           <div className="hidden md:block w-[375px] flex-shrink-0">
             {isLoading && (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                <span className="text-3xl animate-spin inline-block">🤖</span>
               </div>
             )}
             {!isLoading && tweets.length > 0 && (
