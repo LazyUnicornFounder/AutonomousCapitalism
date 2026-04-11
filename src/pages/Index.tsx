@@ -47,7 +47,7 @@ const Index = () => {
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
           <div className="flex items-center gap-5">
-            <a href="/blog" className="text-foreground hover:text-primary transition-colors text-sm font-body font-bold tracking-wide">Stories</a>
+            <a href="/briefings" className="text-foreground hover:text-primary transition-colors text-sm font-body font-bold tracking-wide">Briefings</a>
             <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
               <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
@@ -65,7 +65,7 @@ const Index = () => {
             <span className="whitespace-nowrap">The <span className="text-primary">autonomous</span> revolution.</span><br />Delivered daily.
           </h2>
           <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed mb-8 max-w-lg mx-auto">
-            Every morning, AI reads hundreds of posts about the <span className="text-primary font-bold">autonomous</span> revolution from <svg className="w-5 h-5 md:w-6 md:h-6 fill-primary inline -mt-0.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> and writes you one sharp, story-driven briefing on what machines are doing in business, finance, and society.
+            Every morning, AI reads hundreds of posts about the <span className="text-primary font-bold">autonomous</span> revolution from <svg className="w-5 h-5 md:w-6 md:h-6 fill-primary inline -mt-0.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> and writes you one sharp, story-driven <span className="text-primary font-bold">briefing</span> on what machines are doing in business, finance, and society.
           </p>
           <EmailCapture variant="hero" />
         </div>
