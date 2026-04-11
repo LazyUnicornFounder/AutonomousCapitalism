@@ -33,8 +33,8 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
         )}
         <span className="font-bold text-xs text-foreground font-body truncate">{tweet.username}</span>
         {tweet.verified && <BadgeCheck className="w-3.5 h-3.5 text-primary shrink-0" />}
-        <span className="text-muted-foreground text-xs font-body">{tweet.handle}</span>
-      </div>
+        <span className="text-muted-foreground text-xs font-body truncate">{tweet.handle}</span>
+        <span className="text-muted-foreground text-xs font-body shrink-0">· {tweet.timestamp}</span>
       <p className="text-foreground/90 text-sm leading-snug font-body line-clamp-3 break-words">
         {highlightAutonomous(tweet.content)}
       </p>
