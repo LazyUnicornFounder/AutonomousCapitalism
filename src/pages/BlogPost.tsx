@@ -13,6 +13,7 @@ type BlogPostData = {
   tweet_count: number;
   published_date: string;
   created_at: string;
+  image_url: string | null;
 };
 
 const fetchBlogPost = async (id: string): Promise<BlogPostData> => {
@@ -125,6 +126,15 @@ const BlogPost = () => {
             <h1 className="font-display font-black text-3xl md:text-4xl leading-tight mb-8 text-foreground">
               {post.title}
             </h1>
+
+            {post.image_url && (
+              <img
+                src={post.image_url}
+                alt={post.title}
+                className="w-full aspect-[16/9] object-cover mb-8"
+                loading="eager"
+              />
+            )}
 
             <div className="border-t border-border pt-6">
               {renderMarkdown(post.content)}

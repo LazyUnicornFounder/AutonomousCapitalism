@@ -54,6 +54,64 @@ async function fetchAllTweets(bearerToken: string, query: string, maxTotal = 200
   return allTweets;
 }
 
+async function generateCoverImage(
+  lovableKey: string,
+  title: string,
+  summary: string,
+  supabase: any,
+): Promise<string | null> {
+  try {
+    console.log("Generating cover image...");
+    const imagePrompt = `Create a dramatic, editorial-style illustration for a news article titled "${title}". The image should be abstract, moody, and futuristic — think autonomous machines, AI systems, digital networks, or algorithmic capitalism. Use dark tones with striking accent colors. No text in the image. Cinematic composition, high contrast, magazine-quality editorial art.`;
+
+    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${lovableKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-pro-image-preview",
+        messages: [{ role: "user", content: imagePrompt }],
+        modalities: ["image", "text"],
+      }),
+    });
+
+    if (!aiRes.ok) {
+      console.error("Image generation error:", aiRes.status);
+      return null;
+    }
+
+    const aiData = await aiRes.json();
+    const imageDataUrl = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    if (!imageDataUrl) {
+      console.error("No image returned from AI");
+      return null;
+    }
+
+    // Extract base64 data and upload to storage
+    const base64Data = imageDataUrl.split(",")[1];
+    const binaryData = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+    const fileName = `blog-covers/${crypto.randomUUID()}.png`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("public-assets")
+      .upload(fileName, binaryData, { contentType: "image/png", upsert: true });
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      return null;
+    }
+
+    const { data: publicUrl } = supabase.storage.from("public-assets").getPublicUrl(fileName);
+    console.log("Cover image uploaded:", publicUrl.publicUrl);
+    return publicUrl.publicUrl;
+  } catch (e) {
+    console.error("Image generation failed (non-fatal):", e);
+    return null;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -165,6 +223,9 @@ Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look 
     const body = lines.slice(1).join("\n").trim();
     const summary = body.substring(0, 300).replace(/\n/g, " ").trim() + "…";
 
+    // Generate cover image
+    const imageUrl = await generateCoverImage(lovableKey, title, summary, supabase);
+
     if (force) {
       // Delete existing post for today before inserting
       await supabase.from("blog_posts").delete().eq("published_date", today);
@@ -176,6 +237,7 @@ Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look 
       summary,
       tweet_count: tweets.length,
       published_date: today,
+      image_url: imageUrl,
     }).select("id").single();
 
     if (insertError) {
@@ -205,7 +267,7 @@ Do NOT list tweets. Tell a STORY. Make it feel like a daily column readers look 
 
     console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
-      JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length }),
+      JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length, image_url: imageUrl }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {

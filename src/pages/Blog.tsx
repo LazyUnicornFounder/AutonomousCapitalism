@@ -12,12 +12,13 @@ type BlogPost = {
   tweet_count: number;
   published_date: string;
   created_at: string;
+  image_url: string | null;
 };
 
 const fetchBlogPosts = async (): Promise<BlogPost[]> => {
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("id, title, summary, tweet_count, published_date, created_at")
+    .select("id, title, summary, tweet_count, published_date, created_at, image_url")
     .order("published_date", { ascending: false });
 
   if (error) throw error;
@@ -79,6 +80,14 @@ const Blog = () => {
                   · {post.tweet_count} tweets analyzed
                 </span>
               </div>
+              {post.image_url && (
+                <img
+                  src={post.image_url}
+                  alt={post.title}
+                  className="w-full aspect-[16/9] object-cover mb-4 rounded"
+                  loading="lazy"
+                />
+              )}
               <h2 className="font-display font-black text-xl md:text-2xl leading-tight mb-3 group-hover:text-primary transition-colors">
                 {post.title}
               </h2>
