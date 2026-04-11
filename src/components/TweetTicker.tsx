@@ -59,21 +59,42 @@ type TweetTickerProps = {
 };
 
 const TweetTicker = ({ tweets }: TweetTickerProps) => {
-  const items = [...tweets, ...tweets];
+  const mid = Math.ceil(tweets.length / 2);
+  const leftTweets = tweets.slice(0, mid);
+  const rightTweets = tweets.slice(mid);
+
+  const leftItems = [...leftTweets, ...leftTweets];
+  const rightItems = [...rightTweets, ...rightTweets];
 
   return (
-    <div className="relative h-[calc(100vh-200px)] overflow-hidden">
+    <div className="flex gap-6 h-[calc(100vh-200px)] overflow-hidden relative">
       {/* Top fade */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 z-10 bg-gradient-to-b from-background to-transparent" />
       {/* Bottom fade */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-background to-transparent" />
-      <div
-        className="flex flex-col gap-8 animate-ticker-up"
-        style={{ ["--ticker-speed" as string]: "180s" }}
-      >
-        {items.map((tweet, i) => (
-          <TickerCard key={`${tweet.id}-${i}`} tweet={tweet} />
-        ))}
+
+      {/* Left column — scrolls up */}
+      <div className="flex-1 overflow-hidden">
+        <div
+          className="flex flex-col gap-8 animate-ticker-up"
+          style={{ ["--ticker-speed" as string]: "300s" }}
+        >
+          {leftItems.map((tweet, i) => (
+            <TickerCard key={`left-${tweet.id}-${i}`} tweet={tweet} />
+          ))}
+        </div>
+      </div>
+
+      {/* Right column — scrolls down */}
+      <div className="flex-1 overflow-hidden">
+        <div
+          className="flex flex-col gap-8 animate-ticker-down"
+          style={{ ["--ticker-speed" as string]: "300s" }}
+        >
+          {rightItems.map((tweet, i) => (
+            <TickerCard key={`right-${tweet.id}-${i}`} tweet={tweet} />
+          ))}
+        </div>
       </div>
     </div>
   );
