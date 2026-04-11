@@ -27,6 +27,7 @@ Deno.serve(async (req) => {
     // Get the blog post to send (either from body or latest)
     const body = await req.json().catch(() => ({}));
     let postId = body.postId;
+    const singleEmail = body.singleEmail; // optional: send only to this email
 
     let post: any;
     if (postId) {
@@ -48,18 +49,24 @@ Deno.serve(async (req) => {
       post = data;
     }
 
-    // Get all active subscribers
-    const { data: subscribers, error: subError } = await supabase
-      .from("subscribers")
-      .select("email")
-      .eq("is_active", true);
+    // Get recipients: single email or all active subscribers
+    let subscribers: { email: string }[];
+    if (singleEmail) {
+      subscribers = [{ email: singleEmail }];
+    } else {
+      const { data, error: subError } = await supabase
+        .from("subscribers")
+        .select("email")
+        .eq("is_active", true);
 
-    if (subError) throw new Error(`Failed to fetch subscribers: ${subError.message}`);
-    if (!subscribers || subscribers.length === 0) {
-      return new Response(
-        JSON.stringify({ message: "No active subscribers" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      if (subError) throw new Error(`Failed to fetch subscribers: ${subError.message}`);
+      if (!data || data.length === 0) {
+        return new Response(
+          JSON.stringify({ message: "No active subscribers" }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      subscribers = data;
     }
 
     // Build the email HTML
