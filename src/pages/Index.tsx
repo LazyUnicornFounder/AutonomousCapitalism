@@ -43,7 +43,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <header>
         <div className="flex items-center justify-between py-6 px-6 md:px-24">
-          <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
+          <h1 className="font-display text-base md:text-lg font-black tracking-tight text-foreground">
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
           <div className="flex items-center gap-5">
