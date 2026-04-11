@@ -59,10 +59,10 @@ const Index = () => {
       </header>
 
       {/* Hero — Email capture CTA + Vertical Tweet Ticker */}
-      <section className="border-b border-border min-h-[calc(100vh-64px)] flex items-center py-16 md:py-24">
+      <section className="border-b border-border min-h-[calc(100vh-64px)] flex items-center py-16 md:py-24 overflow-hidden">
         <div className="flex w-full px-6 md:px-24 gap-12">
           {/* Left: headline + CTA */}
-          <div className="max-w-xl text-left flex-shrink-0">
+          <div className="md:w-1/2 text-left flex-shrink-0">
             <h2 className="font-display font-black text-4xl md:text-6xl leading-none tracking-tight text-foreground mb-6">
               <span className="md:whitespace-nowrap">The <span className="text-primary">autonomous</span> revolution.</span><br />Delivered daily.
             </h2>
