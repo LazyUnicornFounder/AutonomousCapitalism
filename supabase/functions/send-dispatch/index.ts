@@ -76,7 +76,7 @@ Deno.serve(async (req) => {
       .split(/\n\n+/)
       .map((p: string) => {
         // Bold
-        let html = p.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        let html = p.replace(/\*\*(.*?)\*\*/g, "$1");
         // Italic
         html = html.replace(/_(.*?)_/g, "<em>$1</em>");
         // @handles as links
