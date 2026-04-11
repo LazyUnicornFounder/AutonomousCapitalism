@@ -1,0 +1,166 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    const bearerToken = Deno.env.get("TWITTER_BEARER_TOKEN");
+    if (!bearerToken) throw new Error("TWITTER_BEARER_TOKEN not configured");
+
+    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    if (!lovableKey) throw new Error("LOVABLE_API_KEY not configured");
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, serviceKey);
+
+    // Check if we already generated today's post
+    const today = new Date().toISOString().split("T")[0];
+    const { data: existing } = await supabase
+      .from("blog_posts")
+      .select("id")
+      .eq("published_date", today)
+      .maybeSingle();
+
+    if (existing) {
+      return new Response(
+        JSON.stringify({ message: "Blog post already exists for today" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Fetch recent tweets about "autonomous"
+    const twitterUrl = new URL("https://api.x.com/2/tweets/search/recent");
+    twitterUrl.searchParams.set("query", "autonomous -is:retweet lang:en");
+    twitterUrl.searchParams.set("max_results", "50");
+    twitterUrl.searchParams.set("tweet.fields", "created_at,public_metrics,author_id");
+    twitterUrl.searchParams.set("expansions", "author_id");
+    twitterUrl.searchParams.set("user.fields", "name,username");
+
+    console.log("Fetching tweets for blog generation...");
+    const twitterRes = await fetch(twitterUrl.toString(), {
+      headers: { Authorization: `Bearer ${bearerToken}` },
+    });
+
+    const twitterData = await twitterRes.json();
+    if (!twitterRes.ok) {
+      console.error("Twitter API error:", JSON.stringify(twitterData));
+      throw new Error(`Twitter API error: ${twitterData.detail || twitterData.title}`);
+    }
+
+    const users: Record<string, any> = {};
+    if (twitterData.includes?.users) {
+      for (const u of twitterData.includes.users) users[u.id] = u;
+    }
+
+    const tweets = (twitterData.data || []).map((t: any) => {
+      const user = users[t.author_id] || {};
+      return {
+        text: t.text,
+        author: user.name || "Unknown",
+        handle: `@${user.username || "unknown"}`,
+        likes: t.public_metrics?.like_count || 0,
+        retweets: t.public_metrics?.retweet_count || 0,
+      };
+    });
+
+    if (tweets.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No tweets found to summarize" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Build tweet digest for AI
+    const tweetDigest = tweets
+      .map(
+        (t: any, i: number) =>
+          `${i + 1}. ${t.author} (${t.handle}): "${t.text}" [${t.likes} likes, ${t.retweets} RTs]`
+      )
+      .join("\n");
+
+    // Use Lovable AI to generate the blog post
+    const aiRes = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            {
+              role: "system",
+              content: `You are a sharp, witty journalist writing for "Autonomous Capitalism" — a publication tracking the rise of autonomous systems in business, finance, and society. Write in a narrative, story-driven style. Think New Yorker meets Wired. Use vivid language, connect themes across tweets, and weave them into a cohesive daily narrative. The tone is smart, slightly irreverent, and forward-looking.
+
+Format:
+- Start with a compelling headline (ALL CAPS)
+- Write 4-8 paragraphs of narrative prose
+- Reference specific tweets/voices naturally woven into the story (mention handles)
+- End with a thought-provoking closing line
+- Use markdown formatting
+
+Do NOT list tweets. Tell a STORY.`,
+            },
+            {
+              role: "user",
+              content: `Here are today's ${tweets.length} tweets about autonomous systems. Write today's daily blog post:\n\n${tweetDigest}`,
+            },
+          ],
+        }),
+      }
+    );
+
+    if (!aiRes.ok) {
+      const errText = await aiRes.text();
+      console.error("AI gateway error:", aiRes.status, errText);
+      throw new Error(`AI gateway error: ${aiRes.status}`);
+    }
+
+    const aiData = await aiRes.json();
+    const content = aiData.choices?.[0]?.message?.content;
+    if (!content) throw new Error("No content generated by AI");
+
+    // Extract title from first line
+    const lines = content.trim().split("\n");
+    let title = lines[0].replace(/^#+\s*/, "").replace(/^\*+/, "").replace(/\*+$/, "").trim();
+    const body = lines.slice(1).join("\n").trim();
+    const summary = body.substring(0, 300).replace(/\n/g, " ").trim() + "…";
+
+    // Store in database
+    const { error: insertError } = await supabase.from("blog_posts").insert({
+      title,
+      content: body,
+      summary,
+      tweet_count: tweets.length,
+      published_date: today,
+    });
+
+    if (insertError) {
+      console.error("Insert error:", insertError);
+      throw new Error(`Failed to save blog post: ${insertError.message}`);
+    }
+
+    console.log("Daily blog post generated successfully");
+    return new Response(
+      JSON.stringify({ message: "Blog post generated", title, tweet_count: tweets.length }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Error:", error);
+    return new Response(
+      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+});
