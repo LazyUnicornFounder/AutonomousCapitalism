@@ -30,9 +30,15 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "compact"
         if (error.code === "23505") throw new Error("already_subscribed");
         throw error;
       }
+      // Send the most recent dispatch to the new subscriber
+      supabase.functions.invoke("send-dispatch", {
+        body: { singleEmail: emailAddr },
+      }).catch((e) => console.error("Welcome dispatch failed:", e));
     },
     onSuccess: () => {
-      toast.success("You're in. Welcome to the revolution.");
+      toast.success("You're in! Check your spam folder and move us to Primary so you never miss a dispatch.", {
+        duration: 8000,
+      });
       setEmail("");
       queryClient.invalidateQueries({ queryKey: ["subscriber-count"] });
     },
