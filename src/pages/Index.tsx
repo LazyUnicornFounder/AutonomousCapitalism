@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import TweetCard from "@/components/TweetCard";
+import TweetTicker from "@/components/TweetTicker";
 import EmailCapture from "@/components/EmailCapture";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
@@ -29,15 +29,13 @@ const Index = () => {
   const { data: liveTweets, isLoading, isError } = useQuery({
     queryKey: ["tweets", "autonomous"],
     queryFn: fetchTweets,
-    refetchInterval: 60000, // refresh every minute
+    refetchInterval: 60000,
   });
 
   const tweets = (liveTweets || []).map((t) => ({
     ...t,
     timestamp: formatTimestamp(t.timestamp),
   }));
-
-  const displayTweets = tweets;
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,14 +55,13 @@ const Index = () => {
           <nav className="flex items-center gap-5 mt-3">
             <a href="#about" className="text-foreground hover:text-primary transition-colors text-sm font-body">About</a>
             <a href="/blog" className="text-foreground hover:text-primary transition-colors text-sm font-body">Autonomous Dispatch</a>
-            <a href="#live" className="text-foreground hover:text-primary transition-colors text-sm font-body">Live from 𝕏</a>
           </nav>
         </div>
       </header>
 
-      {/* Hero — Email capture CTA */}
+      {/* Hero — Email capture CTA + Tweet Tickers */}
       <section className="border-b border-border py-16 md:py-24">
-        <div className="container px-4 max-w-2xl mx-auto text-center">
+        <div className="container px-4 max-w-2xl mx-auto text-center mb-12">
           <h2 className="font-display font-black text-4xl md:text-6xl leading-none tracking-tight text-foreground mb-6">
             The <span className="text-primary">autonomous</span> revolution,<br />delivered daily.
           </h2>
@@ -73,36 +70,17 @@ const Index = () => {
           </p>
           <EmailCapture variant="hero" />
         </div>
-      </section>
 
-      {/* Live feed */}
-      <section id="live" className="container py-8 px-4">
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-          <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight text-foreground flex items-center gap-3">
-            Live from
-            <svg className="w-8 h-8 md:w-10 md:h-10 fill-primary" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </h2>
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-        </div>
-        {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-            <span className="ml-2 text-muted-foreground font-body text-sm">Loading live tweets…</span>
-          </div>
-        )}
-        {isError && (
-          <p className="text-center text-muted-foreground font-body text-sm mb-4">
-            Couldn't load live tweets — showing cached posts.
-          </p>
-        )}
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
-          {displayTweets.map((tweet) => (
-            <TweetCard key={tweet.id} tweet={tweet} />
-          ))}
-        </div>
+        {/* Tweet tickers */}
         <div className="mt-8">
-          <EmailCapture variant="default" />
+          {isLoading && (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+            </div>
+          )}
+          {!isLoading && tweets.length > 0 && (
+            <TweetTicker tweets={tweets} />
+          )}
         </div>
       </section>
 
