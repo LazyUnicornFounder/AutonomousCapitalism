@@ -1,6 +1,16 @@
 import { BadgeCheck } from "lucide-react";
 import type { Tweet } from "@/data/tweets";
 
+const trimAfterAutonomous = (text: string, minWordsAfter = 10): string => {
+  const idx = text.search(/autonomous/i);
+  if (idx === -1) return text;
+  const after = text.slice(idx);
+  const words = after.split(/\s+/);
+  if (words.length <= minWordsAfter + 1) return text;
+  const kept = text.slice(0, idx) + words.slice(0, minWordsAfter + 1).join(" ");
+  return kept + "…";
+};
+
 const highlightAutonomous = (text: string) => {
   const parts = text.split(/(autonomous)/gi);
   return parts.map((part, i) =>
