@@ -40,7 +40,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header>
-        <div className="container flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-4 px-4 md:px-8">
           <h1 className="font-display text-2xl md:text-3xl font-black tracking-tight text-foreground">
             <span className="text-primary">Autonomous</span> Capitalism
           </h1>
