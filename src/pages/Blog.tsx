@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
 import EmailCapture from "@/components/EmailCapture";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,10 +27,19 @@ const fetchBlogPosts = async (): Promise<BlogPost[]> => {
 };
 
 const Blog = () => {
+  const navigate = useNavigate();
   const { data: posts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: fetchBlogPosts,
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") navigate("/");
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-background">
