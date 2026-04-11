@@ -77,7 +77,7 @@ const TweetTicker = ({ tweets }: TweetTickerProps) => {
       <div className="flex-1 overflow-hidden">
         <div
           className="flex flex-col gap-8 animate-ticker-up"
-          style={{ ["--ticker-speed" as string]: "300s" }}
+          style={{ ["--ticker-speed" as string]: "600s" }}
         >
           {leftItems.map((tweet, i) => (
             <TickerCard key={`left-${tweet.id}-${i}`} tweet={tweet} />
@@ -89,7 +89,7 @@ const TweetTicker = ({ tweets }: TweetTickerProps) => {
       <div className="flex-1 overflow-hidden">
         <div
           className="flex flex-col gap-8 animate-ticker-down"
-          style={{ ["--ticker-speed" as string]: "300s" }}
+          style={{ ["--ticker-speed" as string]: "600s" }}
         >
           {rightItems.map((tweet, i) => (
             <TickerCard key={`right-${tweet.id}-${i}`} tweet={tweet} />
