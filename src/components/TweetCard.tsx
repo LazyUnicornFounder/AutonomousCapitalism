@@ -46,7 +46,7 @@ const TweetCard = ({ tweet }: { tweet: Tweet }) => {
             <span className="text-muted-foreground text-sm font-body">{tweet.handle}</span>
             <span className="text-muted-foreground text-sm font-body">· {tweet.timestamp}</span>
           </div>
-          <p className="text-foreground text-[15px] leading-relaxed mt-1 font-body">
+          <p className="text-foreground text-[15px] leading-relaxed mt-1 font-body break-words overflow-hidden">
             {highlightAutonomous(tweet.content)}
           </p>
           <div className="flex items-center gap-6 mt-3 text-muted-foreground">
