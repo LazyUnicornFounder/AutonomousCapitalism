@@ -117,6 +117,9 @@ Deno.serve(async (req) => {
           <p style="margin:20px 0 0;font-size:12px;color:#666;">
             Autonomous Capitalism is part of <a href="https://lazyfactoryventures.com" style="color:#0099ff;text-decoration:none;">Lazy Factory Ventures</a>
           </p>
+          <p style="margin:12px 0 0;font-size:11px;color:#555;">
+            <a href="${supabaseUrl}/functions/v1/unsubscribe?email=\${encodeURIComponent(sub.email)}" style="color:#555;text-decoration:underline;">Unsubscribe</a>
+          </p>
         </td></tr>
       </table>
     </td></tr>
