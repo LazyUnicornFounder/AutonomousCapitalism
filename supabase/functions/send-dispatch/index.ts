@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
               "X-Connection-Api-Key": RESEND_API_KEY,
             },
             body: JSON.stringify({
-              from: "Autonomous Capitalism <onboarding@resend.dev>",
+              from: "Autonomous Capitalism <dispatch@autonomouscapitalism.com>",
               to: [sub.email],
               subject: `🤖 ${post.title}`,
               html: emailHtml,
