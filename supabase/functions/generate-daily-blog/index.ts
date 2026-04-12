@@ -224,6 +224,49 @@ Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily
     const body = lines.slice(1).join("\n").trim();
     const summary = body.substring(0, 300).replace(/\n/g, " ").trim() + "…";
 
+    // Generate business ideas from the same tweets
+    console.log("Generating autonomous business ideas...");
+    const ideasRes = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            {
+              role: "system",
+              content: `You are a venture strategist for "Autonomous Capitalism." Based on today's X posts about autonomous systems, generate 3-5 concrete, actionable business ideas that leverage the trends discussed. Each idea should be:
+
+Format each idea as:
+### [Idea Name]
+One paragraph (3-5 sentences) describing the opportunity, target market, why now, and how autonomous technology makes it viable.
+
+Be specific — include concrete product concepts, not vague "AI platform" ideas. Think like a founder who reads these trends and spots gaps. No preamble, jump straight into the ideas.`,
+            },
+            {
+              role: "user",
+              content: `Here are today's ${tweets.length} tweets about autonomous systems. Generate business ideas inspired by these trends:\n\n${tweetDigest.substring(0, 8000)}`,
+            },
+          ],
+        }),
+      }
+    );
+
+    let ideasSection = "";
+    if (ideasRes.ok) {
+      const ideasData = await ideasRes.json();
+      const ideasContent = ideasData.choices?.[0]?.message?.content;
+      if (ideasContent) {
+        ideasSection = `\n\n---\n\n## Business Ideas From Today's Trends\n\n${ideasContent}`;
+      }
+    } else {
+      console.error("Ideas generation failed (non-fatal):", ideasRes.status);
+    }
+
     // Generate cover image
     const imageUrl = await generateCoverImage(lovableKey, title, summary, supabase);
 
