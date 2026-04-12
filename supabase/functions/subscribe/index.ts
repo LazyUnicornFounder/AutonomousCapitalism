@@ -6,6 +6,79 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+const AUDIENCE_NAME = "Autonomous Capitalism Subscribers";
+
+async function getOrCreateAudienceId(lovableKey: string, resendKey: string): Promise<string> {
+  // List existing audiences
+  const listRes = await fetch(`${GATEWAY_URL}/audiences`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${lovableKey}`,
+      "X-Connection-Api-Key": resendKey,
+    },
+  });
+
+  if (listRes.ok) {
+    const listData = await listRes.json();
+    const audiences = listData?.data || [];
+    const existing = audiences.find((a: any) => a.name === AUDIENCE_NAME);
+    if (existing) return existing.id;
+  }
+
+  // Create new audience
+  const createRes = await fetch(`${GATEWAY_URL}/audiences`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${lovableKey}`,
+      "X-Connection-Api-Key": resendKey,
+    },
+    body: JSON.stringify({ name: AUDIENCE_NAME }),
+  });
+
+  if (!createRes.ok) {
+    const err = await createRes.text();
+    throw new Error(`Failed to create Resend audience: ${err}`);
+  }
+
+  const created = await createRes.json();
+  return created.id;
+}
+
+async function syncContactToResend(
+  email: string,
+  lovableKey: string,
+  resendKey: string,
+  unsubscribed: boolean = false
+) {
+  try {
+    const audienceId = await getOrCreateAudienceId(lovableKey, resendKey);
+
+    const res = await fetch(`${GATEWAY_URL}/audiences/${audienceId}/contacts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": resendKey,
+      },
+      body: JSON.stringify({
+        email,
+        unsubscribed,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error(`Failed to sync contact to Resend: ${err}`);
+    } else {
+      console.log(`Synced ${email} to Resend audience (unsubscribed=${unsubscribed})`);
+    }
+  } catch (e) {
+    console.error("Error syncing to Resend:", e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -23,6 +96,9 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
+
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
     const trimmedEmail = email.trim().toLowerCase();
 
@@ -51,6 +127,11 @@ Deno.serve(async (req) => {
         .from("subscribers")
         .insert({ email: trimmedEmail });
       if (error) throw error;
+    }
+
+    // Sync to Resend Audience (fire and forget)
+    if (LOVABLE_API_KEY && RESEND_API_KEY) {
+      syncContactToResend(trimmedEmail, LOVABLE_API_KEY, RESEND_API_KEY).catch(() => {});
     }
 
     // Send welcome dispatch (fire and forget)
