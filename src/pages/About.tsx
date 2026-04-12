@@ -1,7 +1,7 @@
-import EmailCapture from "@/components/EmailCapture";
 import { Link } from "react-router-dom";
+import EmailCapture from "@/components/EmailCapture";
 
-const Subscribe = () => {
+const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <header>
@@ -12,7 +12,8 @@ const Subscribe = () => {
           <div className="flex items-center gap-3 md:gap-5">
             <Link to="/briefings" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">Briefings</Link>
             <Link to="/ideas" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">Ideas</Link>
-            <Link to="/about" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">About</Link>
+            <Link to="/about" className="text-foreground text-xs md:text-sm font-body font-bold tracking-wide">About</Link>
+            <Link to="/subscribe" className="bg-primary text-primary-foreground px-3 md:px-4 py-1 md:py-1.5 font-body font-bold text-[10px] md:text-xs tracking-wider hover:bg-primary/90 transition-colors">SUBSCRIBE</Link>
             <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors hidden sm:block">
               <svg className="w-4 h-4 md:w-5 md:h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
@@ -23,19 +24,56 @@ const Subscribe = () => {
         </div>
       </header>
 
-      <main className="flex flex-col items-center justify-center py-24 px-6">
-        <div className="max-w-lg w-full">
-          <h1 className="font-display font-black text-3xl md:text-4xl text-foreground mb-4">
-            Get the <span className="text-primary">Daily Autonomous Briefings</span>
+      <section className="border-b border-border py-12">
+        <div className="container px-4 max-w-3xl mx-auto text-center">
+          <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+            About <span className="text-primary">Autonomous</span> Capitalism
           </h1>
-          <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed mb-8 max-w-lg">
-            Every day, AI reads hundreds of <svg className="w-5 h-5 md:w-6 md:h-6 fill-primary inline -mt-0.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> posts about the <span className="text-primary font-bold">autonomous</span> revolution and sends you one sharp, story-driven <span className="text-primary font-bold">briefing</span> on what agents and machines are doing in business, finance, and society.
+        </div>
+      </section>
+
+      <main className="container py-12 px-4 max-w-2xl mx-auto">
+        <div className="space-y-8">
+          <p className="text-foreground/90 font-body text-lg leading-relaxed">
+            Every day, AI reads hundreds of{" "}
+            <svg className="w-5 h-5 fill-primary inline -mt-0.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>{" "}
+            posts about the <span className="text-primary font-bold">autonomous</span> revolution and sends you one sharp, story-driven{" "}
+            <span className="text-primary font-bold">briefing</span> on what agents and machines are doing in business, finance, and society.
           </p>
-          <EmailCapture variant="hero" />
+
+          <p className="text-foreground/90 font-body text-lg leading-relaxed">
+            Autonomous Capitalism tracks the rise of autonomous systems — from AI agents running businesses to robots settling invoices via smart contracts. We distill the noise into signal: one daily briefing, plus AI-generated business ideas you can launch.
+          </p>
+
+          <p className="text-foreground/90 font-body text-lg leading-relaxed">
+            This isn't a newsletter about chatbots. It's a front-row seat to the economy that runs itself.
+          </p>
+
+          <div className="border-t border-border pt-8">
+            <h2 className="font-display font-black text-xl text-foreground mb-4">How it works</h2>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <span className="text-primary font-display font-black text-lg shrink-0">01</span>
+                <p className="text-foreground/80 font-body">AI scans hundreds of X posts daily about autonomous systems, agents, and machine economics.</p>
+              </div>
+              <div className="flex gap-4">
+                <span className="text-primary font-display font-black text-lg shrink-0">02</span>
+                <p className="text-foreground/80 font-body">The most engaging posts are synthesized into a narrative-driven briefing — no lists, no fluff.</p>
+              </div>
+              <div className="flex gap-4">
+                <span className="text-primary font-display font-black text-lg shrink-0">03</span>
+                <p className="text-foreground/80 font-body">Business ideas are extracted from the trends, ready for you to copy a prompt and build.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-8">
+            <EmailCapture variant="default" />
+          </div>
         </div>
       </main>
 
-      <section id="about" className="border-t border-border py-16 md:py-24">
+      <section className="border-t border-border py-16 md:py-24">
         <div className="container px-4 max-w-2xl mx-auto text-center">
           <div className="flex items-center justify-center gap-5 mb-4">
             <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
@@ -57,4 +95,4 @@ const Subscribe = () => {
   );
 };
 
-export default Subscribe;
+export default About;
