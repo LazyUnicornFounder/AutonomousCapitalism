@@ -139,7 +139,7 @@ const Ideas = () => {
                 <div className="flex-1">
                   <h3 className="font-display font-black text-lg text-foreground mb-2">{idea.name}</h3>
                   <p className="text-foreground/80 font-body text-sm leading-relaxed mb-3">{idea.description}</p>
-                  {idea.links.length > 0 && (
+                  {(idea.links?.length ?? 0) > 0 && (
                     <div className="flex items-center gap-2 flex-wrap mb-3">
                       <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                       {idea.links.map((link, j) => (
@@ -155,7 +155,7 @@ const Ideas = () => {
                       ))}
                     </div>
                   )}
-                  {idea.links.length === 0 && (
+                  {(!idea.links || idea.links.length === 0) && (
                     <div className="flex items-center gap-2 mb-3">
                       <svg className="w-4 h-4 fill-muted-foreground shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                       <a
