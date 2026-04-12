@@ -2,49 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '@fontsource/montserrat/700.css';
-@import '@fontsource/montserrat/900.css';
-@import '@fontsource/playfair-display/400.css';
-@import '@fontsource/playfair-display/700.css';
-@import '@fontsource/playfair-display/900.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/700.css';
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 92%;
-    --card: 0 0% 0%;
-    --card-foreground: 0 0% 92%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 92%;
-    --primary: 200 100% 50%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 92%;
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 0 0% 14%;
-    --accent-foreground: 0 0% 92%;
-    --destructive: 0 84.2% 60.2%;
+    --background: 220 15% 8%;
+    --foreground: 220 10% 92%;
+    --card: 220 15% 11%;
+    --card-foreground: 220 10% 92%;
+    --popover: 220 15% 13%;
+    --popover-foreground: 220 10% 92%;
+    --primary: 175 70% 50%;
+    --primary-foreground: 220 15% 8%;
+    --secondary: 220 12% 15%;
+    --secondary-foreground: 220 10% 80%;
+    --muted: 220 12% 16%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 220 12% 18%;
+    --accent-foreground: 220 10% 92%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 0 100% 50%;
-    --radius: 0rem;
+    --border: 220 12% 18%;
+    --input: 220 12% 16%;
+    --ring: 175 70% 50%;
+    --radius: 0.75rem;
 
-    --font-display: 'Montserrat', system-ui, sans-serif;
+    --font-display: 'Inter', system-ui, sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
 
-    --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 0 0% 92%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 0 0% 92%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 0 100% 50%;
+    --sidebar-background: 220 15% 9%;
+    --sidebar-foreground: 220 10% 92%;
+    --sidebar-primary: 220 10% 92%;
+    --sidebar-primary-foreground: 220 15% 9%;
+    --sidebar-accent: 220 12% 15%;
+    --sidebar-accent-foreground: 220 10% 92%;
+    --sidebar-border: 220 12% 18%;
+    --sidebar-ring: 175 70% 50%;
   }
 }
 
@@ -53,7 +48,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
   }
   h1, h2, h3, h4, h5, h6 {

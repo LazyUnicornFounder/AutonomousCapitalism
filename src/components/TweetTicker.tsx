@@ -15,7 +15,7 @@ const highlightAutonomous = (text: string) => {
   const parts = text.split(/(autonomous)/gi);
   return parts.map((part, i) =>
     part.toLowerCase() === "autonomous" ? (
-      <span key={i} className="text-primary font-bold">{part}</span>
+      <span key={i} className="text-primary font-semibold">{part}</span>
     ) : (
       part
     )
@@ -31,23 +31,23 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
       href={tweetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="block pl-3 py-2 hover:border-primary/50 transition-all duration-300 cursor-pointer no-underline group"
+      className="block p-4 rounded-xl bg-card/60 border border-border/40 hover:border-primary/30 hover:bg-card transition-all duration-300 cursor-pointer no-underline group"
     >
-      <div className="flex items-center gap-1.5 mb-1">
+      <div className="flex items-center gap-2 mb-2">
         {tweet.avatarUrl ? (
-          <img src={tweet.avatarUrl} alt={tweet.username} className="w-6 h-6 rounded-full object-cover opacity-60" />
+          <img src={tweet.avatarUrl} alt={tweet.username} className="w-6 h-6 rounded-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" />
         ) : (
-          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[12px] font-bold text-muted-foreground font-body">
+          <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-[11px] font-semibold text-muted-foreground font-body">
             {tweet.avatar}
           </div>
         )}
-        <span className="text-base text-foreground/40 font-body truncate group-hover:text-foreground transition-colors">
+        <span className="text-sm text-muted-foreground font-body truncate group-hover:text-foreground transition-colors">
           {tweet.handle}
         </span>
-        {tweet.verified && <BadgeCheck className="w-5 h-5 text-primary/40 shrink-0" />}
-        <span className="text-muted-foreground text-sm font-body shrink-0 ml-auto group-hover:text-foreground transition-colors">{tweet.timestamp}</span>
+        {tweet.verified && <BadgeCheck className="w-4 h-4 text-primary/50 shrink-0" />}
+        <span className="text-muted-foreground/60 text-xs font-body shrink-0 ml-auto">{tweet.timestamp}</span>
       </div>
-      <p className="text-foreground/50 text-lg leading-relaxed font-body break-words group-hover:text-foreground transition-colors">
+      <p className="text-foreground/60 text-sm leading-relaxed font-body break-words group-hover:text-foreground/90 transition-colors">
         {highlightAutonomous(trimAfterAutonomous(tweet.content))}
       </p>
     </a>
@@ -63,12 +63,10 @@ const TweetTicker = ({ tweets }: TweetTickerProps) => {
 
   return (
     <div className="relative h-[calc(100vh-200px)] overflow-hidden">
-      {/* Top fade */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 z-10 bg-gradient-to-b from-background to-transparent" />
-      {/* Bottom fade */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 z-10 bg-gradient-to-b from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-10 bg-gradient-to-t from-background to-transparent" />
       <div
-        className="flex flex-col gap-8 animate-ticker-up"
+        className="flex flex-col gap-3 animate-ticker-up"
         style={{ ["--ticker-speed" as string]: "600s" }}
       >
         {items.map((tweet, i) => (
