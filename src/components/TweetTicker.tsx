@@ -45,7 +45,7 @@ const TickerCard = ({ tweet }: { tweet: Tweet }) => {
           {tweet.handle}
         </span>
         {tweet.verified && <BadgeCheck className="w-5 h-5 text-primary/40 shrink-0" />}
-        <span className="text-foreground/20 text-base font-body shrink-0 ml-auto group-hover:text-foreground transition-colors">{tweet.timestamp}</span>
+        <span className="text-muted-foreground text-sm font-body shrink-0 ml-auto group-hover:text-foreground transition-colors">{tweet.timestamp}</span>
       </div>
       <p className="text-foreground/50 text-lg leading-relaxed font-body break-words group-hover:text-foreground transition-colors">
         {highlightAutonomous(trimAfterAutonomous(tweet.content))}
