@@ -31,7 +31,23 @@ const fetchBlogPost = async (id: string): Promise<BlogPostData> => {
 const renderMarkdown = (text: string) => {
   const paragraphs = text.split(/\n\n+/);
   return paragraphs.map((p, i) => {
-    if (p.startsWith("# ") || p.startsWith("## ") || p.startsWith("### ")) {
+    // Horizontal rule
+    if (/^---+$/.test(p.trim())) {
+      return <hr key={i} className="my-8 border-border" />;
+    }
+
+    // H2 heading
+    if (p.startsWith("## ")) {
+      const stripped = p.replace(/^##\s*/, "");
+      return (
+        <h2 key={i} className="font-display font-black text-2xl mt-10 mb-4 text-primary">
+          {stripped}
+        </h2>
+      );
+    }
+
+    // H3 heading
+    if (p.startsWith("### ") || p.startsWith("# ")) {
       const stripped = p.replace(/^#+\s*/, "");
       return (
         <h3 key={i} className="font-display font-black text-xl mt-6 mb-3 text-foreground">
