@@ -81,7 +81,7 @@ const Blog = () => {
 
         {posts && posts.length === 0 && (
           <p className="text-center text-muted-foreground font-body py-12">
-            No dispatches yet. The first one will be generated soon.
+            No briefings yet. The first one will be generated soon.
           </p>
         )}
 
@@ -94,7 +94,7 @@ const Blog = () => {
             >
               <div className="flex items-center gap-3 mb-3">
                 <span className="bg-primary text-primary-foreground text-xs font-body font-bold tracking-widest px-2 py-0.5">
-                  DISPATCH
+                  BRIEFING
                 </span>
                 <span className="text-xs text-muted-foreground font-body">
                   {format(new Date(post.published_date), "MMMM d, yyyy")}

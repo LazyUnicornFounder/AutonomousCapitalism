@@ -118,7 +118,7 @@ const BlogPost = () => {
           <article>
             <div className="flex items-center gap-3 mb-6">
               <span className="bg-primary text-primary-foreground text-xs font-body font-bold tracking-widest px-2 py-0.5">
-                DISPATCH
+                BRIEFING
               </span>
               <span className="text-xs text-muted-foreground font-body">
                 {format(new Date(post.published_date), "MMMM d, yyyy")}
