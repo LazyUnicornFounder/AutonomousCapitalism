@@ -139,6 +139,35 @@ const Ideas = () => {
                 <div className="flex-1">
                   <h3 className="font-display font-black text-lg text-foreground mb-2">{idea.name}</h3>
                   <p className="text-foreground/80 font-body text-sm leading-relaxed mb-3">{idea.description}</p>
+                  {idea.links.length > 0 && (
+                    <div className="flex items-center gap-2 flex-wrap mb-3">
+                      <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      {idea.links.map((link, j) => (
+                        <a
+                          key={j}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-body text-primary hover:underline border border-primary/30 px-2 py-0.5 hover:bg-primary/10 transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  {idea.links.length === 0 && (
+                    <div className="flex items-center gap-2 mb-3">
+                      <svg className="w-4 h-4 fill-muted-foreground shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      <a
+                        href={`https://x.com/search?q=${encodeURIComponent(idea.name.split(/\s+/).slice(0, 3).join(" ") + " autonomous")}&f=live`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-body text-muted-foreground hover:text-primary hover:underline"
+                      >
+                        Search related posts →
+                      </a>
+                    </div>
+                  )}
                   <div className="flex items-center gap-3 text-xs text-muted-foreground font-body">
                     <span>{format(new Date(idea.date), "MMM d, yyyy")}</span>
                     <span>·</span>
