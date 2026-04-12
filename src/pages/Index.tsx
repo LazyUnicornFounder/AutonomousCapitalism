@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import TweetTicker from "@/components/TweetTicker";
 import EmailCapture from "@/components/EmailCapture";
+import NavHeader from "@/components/NavHeader";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
 
@@ -41,25 +42,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header>
-        <div className="flex items-center justify-between py-4 px-4 md:py-6 md:px-24">
-          <h1 className="font-display text-sm md:text-lg font-black tracking-tight text-foreground shrink-0">
-            <span className="text-primary">Autonomous</span> Capitalism
-          </h1>
-          <div className="flex items-center gap-3 md:gap-5">
-            <a href="/briefings" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">Briefings</a>
-            <a href="/ideas" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">Ideas</a>
-            <a href="/about" className="text-primary hover:text-primary/80 transition-colors text-xs md:text-sm font-body font-bold tracking-wide">About</a>
-            <a href="/subscribe" className="bg-primary text-primary-foreground px-3 md:px-4 py-1 md:py-1.5 font-body font-bold text-[10px] md:text-xs tracking-wider hover:bg-primary/90 transition-colors">SUBSCRIBE</a>
-            <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors hidden sm:block">
-              <svg className="w-4 h-4 md:w-5 md:h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7448781743005782016" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors hidden sm:block">
-              <svg className="w-4 h-4 md:w-5 md:h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
-            </a>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       {/* Hero — Email capture CTA + Vertical Tweet Ticker */}
       <section className="border-b border-border min-h-[calc(100vh-56px)] flex items-center py-12 md:py-24 overflow-hidden">
