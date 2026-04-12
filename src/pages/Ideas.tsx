@@ -216,7 +216,13 @@ const Ideas = () => {
           ))}
         </div>
 
-        <div className="mt-12">
+        <div className="mt-12 border border-primary/30 p-8">
+          <h3 className="font-display font-black text-xl text-foreground mb-2">
+            Get fresh <span className="text-primary">business ideas</span> in your inbox daily
+          </h3>
+          <p className="text-muted-foreground font-body text-sm mb-4">
+            Every morning, AI analyzes hundreds of X posts and generates actionable autonomous business ideas — delivered straight to your inbox alongside your daily briefing.
+          </p>
           <EmailCapture variant="default" />
         </div>
       </main>
