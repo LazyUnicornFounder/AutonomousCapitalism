@@ -15,7 +15,7 @@ const highlightAutonomous = (text: string) => {
   const parts = text.split(/(autonomous)/gi);
   return parts.map((part, i) =>
     part.toLowerCase() === "autonomous" ? (
-      <span key={i} className="text-primary">{part}</span>
+      <span key={i} className="text-primary font-bold">{part}</span>
     ) : (
       part
     )
