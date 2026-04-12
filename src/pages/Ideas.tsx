@@ -169,7 +169,7 @@ const Ideas = () => {
             Get fresh <span className="text-primary">business ideas</span> in your inbox daily
           </h3>
           <p className="text-muted-foreground font-body text-sm mb-4">
-            Every morning, AI analyzes hundreds of X posts and generates actionable autonomous business ideas — delivered straight to your inbox alongside your daily briefing.
+            Every day, AI analyzes hundreds of X posts and generates actionable autonomous business ideas — delivered straight to your inbox alongside your daily briefing.
           </p>
           <EmailCapture variant="default" />
         </div>
