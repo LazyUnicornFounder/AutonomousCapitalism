@@ -99,7 +99,7 @@ const Index = () => {
                 One daily briefing.<br /><span className="text-primary">Zero noise.</span>
               </h2>
               <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed mb-6">
-                Every morning, AI reads hundreds of X posts about autonomous systems and distills them into a single, story-driven narrative. No lists, no fluff — just the signal that matters for business, finance, and society.
+                Every day, AI reads hundreds of X posts about autonomous systems and distills them into a single, story-driven narrative. No lists, no fluff — just the signal that matters for business, finance, and society.
               </p>
               <a href="/briefings" className="inline-block bg-primary text-primary-foreground px-6 py-2.5 font-body font-bold text-sm tracking-wider hover:bg-primary/90 transition-colors">
                 READ BRIEFINGS →
@@ -116,7 +116,7 @@ const Index = () => {
               </div>
               <div className="flex gap-4">
                 <span className="text-primary font-display font-black text-lg shrink-0">03</span>
-                <p className="text-foreground/80 font-body text-sm">You get one sharp briefing delivered to your inbox every morning.</p>
+                <p className="text-foreground/80 font-body text-sm">You get one sharp briefing delivered to your inbox every day.</p>
               </div>
             </div>
           </div>
