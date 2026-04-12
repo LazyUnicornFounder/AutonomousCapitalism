@@ -9,6 +9,7 @@ import BlogPost from "./pages/BlogPost.tsx";
 import Unsubscribed from "./pages/Unsubscribed.tsx";
 import Subscribe from "./pages/Subscribe.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Ideas from "./pages/Ideas.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/subscribe" element={<Subscribe />} />
           <Route path="/unsubscribed" element={<Unsubscribed />} />
+          <Route path="/ideas" element={<Ideas />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
