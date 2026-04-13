@@ -1,0 +1,3 @@
+UPDATE blog_posts SET content = 'The machine economy is no longer a white-paper fantasy; it is starting to balance its own checkbook. As of this morning, we are seeing the first recognizable outlines of sovereign agent companies—entities that don''t just assist humans but actually form legal structures, route revenue, and pay taxes without a carbon-based life form in the loop. The "AI as a tool" era is being unceremoniously buried by the "AI as a proprietor" epoch.
+
+' || content WHERE id = 'bd21ecb5-4abb-4138-bc10-e90b73798d66';
