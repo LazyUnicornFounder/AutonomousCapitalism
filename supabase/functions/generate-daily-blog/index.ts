@@ -313,6 +313,42 @@ Be specific — include concrete product concepts, not vague "AI platform" ideas
       console.error("Failed to trigger dispatch (non-fatal):", e);
     }
 
+    // Publish to Substack via email
+    const substackEmail = Deno.env.get("SUBSTACK_IMPORT_EMAIL");
+    if (substackEmail) {
+      console.log("Sending post to Substack...");
+      try {
+        const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+        const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+        if (RESEND_API_KEY && LOVABLE_API_KEY) {
+          const substackHtml = `<h1>${title}</h1>\n${body.split(/\n\n+/).map((p: string) => {
+            let html = p.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            html = html.replace(/_(.*?)_/g, "<em>$1</em>");
+            return `<p>${html}</p>`;
+          }).join("\n")}`;
+
+          const substackRes = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${LOVABLE_API_KEY}`,
+              "X-Connection-Api-Key": RESEND_API_KEY,
+            },
+            body: JSON.stringify({
+              from: "Autonomous Capitalism <dispatch@autonomouscapitalism.com>",
+              to: [substackEmail],
+              subject: title,
+              html: substackHtml,
+            }),
+          });
+          const substackData = await substackRes.json();
+          console.log("Substack email result:", JSON.stringify(substackData));
+        }
+      } catch (e) {
+        console.error("Failed to send to Substack (non-fatal):", e);
+      }
+    }
+
     console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
       JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length, image_url: imageUrl }),
