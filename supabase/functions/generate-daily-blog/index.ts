@@ -321,24 +321,9 @@ Be specific — include concrete product concepts, not vague "AI platform" ideas
         const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
         const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
         if (RESEND_API_KEY && LOVABLE_API_KEY) {
-          // Build proper HTML that Substack can parse
-          const paragraphs = body.split(/\n\n+/).map((p: string) => {
-            let html = p.trim();
-            if (!html) return "";
-            // Convert markdown formatting
-            html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-            html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-            html = html.replace(/_(.*?)_/g, "<em>$1</em>");
-            // Preserve line breaks within paragraphs
-            html = html.replace(/\n/g, "<br>");
-            return `<p>${html}</p>`;
-          }).filter(Boolean).join("\n\n");
-
-          const substackHtml = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"></head>
-<body>
-${paragraphs}
-</body></html>`;
+          const substackText = body
+            .replace(/\r\n/g, "\n")
+            .trim();
 
           const substackRes = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
             method: "POST",
@@ -351,7 +336,7 @@ ${paragraphs}
               from: "Autonomous Capitalism <dispatch@autonomouscapitalism.com>",
               to: [substackEmail],
               subject: title,
-              html: substackHtml,
+              text: substackText,
             }),
           });
           const substackData = await substackRes.json();
@@ -364,7 +349,7 @@ ${paragraphs}
 
     console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
-      JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length, image_url: imageUrl }),
+      JSON.stringify({ message: "Blog post generated, dispatched, and sent to Substack", title, tweet_count: tweets.length, image_url: imageUrl }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
