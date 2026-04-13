@@ -143,7 +143,7 @@ const BlogPost = () => {
             )}
 
             <div className="border-t border-border pt-6">
-              {renderMarkdown(post.content.split(/---\s*\n\s*## Business Ideas/i)[0].trim())}
+              {renderMarkdown(post.content)}
             </div>
           </article>
         )}
