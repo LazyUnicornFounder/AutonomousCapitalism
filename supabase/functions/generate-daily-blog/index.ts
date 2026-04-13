@@ -321,11 +321,24 @@ Be specific — include concrete product concepts, not vague "AI platform" ideas
         const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
         const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
         if (RESEND_API_KEY && LOVABLE_API_KEY) {
-          const substackHtml = `<h1>${title}</h1>\n${body.split(/\n\n+/).map((p: string) => {
-            let html = p.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+          // Build proper HTML that Substack can parse
+          const paragraphs = body.split(/\n\n+/).map((p: string) => {
+            let html = p.trim();
+            if (!html) return "";
+            // Convert markdown formatting
+            html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
             html = html.replace(/_(.*?)_/g, "<em>$1</em>");
+            // Preserve line breaks within paragraphs
+            html = html.replace(/\n/g, "<br>");
             return `<p>${html}</p>`;
-          }).join("\n")}`;
+          }).filter(Boolean).join("\n\n");
+
+          const substackHtml = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body>
+${paragraphs}
+</body></html>`;
 
           const substackRes = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
             method: "POST",
