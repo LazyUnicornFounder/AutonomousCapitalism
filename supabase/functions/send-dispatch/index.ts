@@ -72,7 +72,9 @@ Deno.serve(async (req) => {
     // Build the email HTML
     const siteUrl = "https://auto-capital-chronicle.lovable.app";
     const postUrl = `${siteUrl}/blog/${post.id}`;
-    const contentHtml = (post.content as string)
+    // Strip business ideas section from email content
+    const rawContent = (post.content as string).split(/---\s*\n\s*## Business Ideas/i)[0].trim();
+    const contentHtml = rawContent
       .split(/\n\n+/)
       .map((p: string) => {
         // Bold
