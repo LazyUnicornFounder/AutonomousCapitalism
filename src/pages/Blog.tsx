@@ -70,37 +70,34 @@ const Blog = () => {
           </p>
         )}
 
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {posts?.map((post) => (
             <Link
               key={post.id}
               to={`/briefings/${post.id}`}
-              className="block border border-border p-6 hover:border-primary/50 transition-colors group"
+              className="block border border-border p-4 hover:border-primary/50 transition-colors group"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="bg-primary text-primary-foreground text-xs font-body font-bold tracking-widest px-2 py-0.5">
-                  BRIEFING
-                </span>
-                <span className="text-xs text-muted-foreground font-body">
-                  {format(new Date(post.published_date), "MMMM d, yyyy")}
-                </span>
-                <span className="text-xs text-muted-foreground font-body">
-                  · {post.tweet_count} X posts analyzed
-                </span>
-              </div>
               {post.image_url && (
                 <img
                   src={post.image_url}
                   alt={post.title}
-                  className="w-full aspect-[16/9] object-cover mb-4 rounded"
+                  className="w-full aspect-[16/9] object-cover mb-3 rounded"
                   loading="lazy"
                 />
               )}
-              <h2 className="font-display font-black text-xl md:text-2xl leading-tight mb-3 group-hover:text-primary transition-colors">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <span className="bg-primary text-primary-foreground text-[10px] font-body font-bold tracking-widest px-1.5 py-0.5">
+                  BRIEFING
+                </span>
+                <span className="text-[11px] text-muted-foreground font-body">
+                  {format(new Date(post.published_date), "MMM d, yyyy")}
+                </span>
+              </div>
+              <h2 className="font-display font-black text-base leading-tight mb-2 group-hover:text-primary transition-colors">
                 {post.title}
               </h2>
               {post.summary && (
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
+                <p className="text-muted-foreground font-body text-xs leading-relaxed line-clamp-3">
                   {post.summary}
                 </p>
               )}
