@@ -4,6 +4,7 @@ import EmailCapture from "@/components/EmailCapture";
 import NavHeader from "@/components/NavHeader";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tweet } from "@/data/tweets";
+import OpenSourceBanner from "@/components/OpenSourceBanner";
 
 const fetchTweets = async (): Promise<Tweet[]> => {
   const { data, error } = await supabase.functions.invoke("twitter-search", {
@@ -173,6 +174,7 @@ Trends become<br /><span className="text-primary">business ideas.</span>
           </p>
         </div>
       </section>
+          <OpenSourceBanner />
     </div>
   );
 };
