@@ -190,15 +190,8 @@ Deno.serve(async (req) => {
               role: "system",
               content: `You are a sharp, witty journalist writing for "Autonomous Capitalism" — a publication tracking the rise of autonomous systems in business, finance, and society. Write in a narrative, story-driven style. Think New Yorker meets Wired. Use vivid language, connect themes across tweets, and weave them into a cohesive daily narrative. The tone is smart, slightly irreverent, and forward-looking.
 
-HEADLINE RULES (MANDATORY — violating these invalidates your output):
-- Your VERY FIRST LINE must be a headline of 10 words or fewer. No exceptions.
-- The headline must be on its own line with NO markdown heading syntax (no # or ##).
-- Use sentence case (capitalize only the first word and proper nouns).
-- Think newspaper headline: punchy, evocative, compressed. NOT a full sentence.
-- After writing the headline, COUNT the words. If more than 10, rewrite it shorter.
-- The second line must be blank, then the article body begins.
-
 Format:
+- Start with a SHORT, punchy headline (STRICTLY max 10 words) in sentence case (capitalize only the first word and proper nouns, on its own line, no markdown heading syntax). Keep it concise — think newspaper headline, not essay title. Count the words and revise if over 10.
 - Write 6-10 paragraphs of narrative prose
 - Do NOT mention any Twitter/X handles or usernames — refer to people by name or role only
 - Group themes: technology breakthroughs, market impacts, labor disruption, policy debates, cultural reactions
@@ -320,85 +313,9 @@ Be specific — include concrete product concepts, not vague "AI platform" ideas
       console.error("Failed to trigger dispatch (non-fatal):", e);
     }
 
-    // Publish to Substack via email
-    const substackEmail = Deno.env.get("SUBSTACK_IMPORT_EMAIL");
-    if (substackEmail) {
-      console.log("Sending post to Substack...");
-      try {
-        const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-        const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-        if (RESEND_API_KEY && LOVABLE_API_KEY) {
-          const siteUrl = "https://auto-capital-chronicle.lovable.app";
-          const contentHtml = body
-            .split(/\n\n+/)
-            .map((p: string) => {
-              let html = p.replace(/\*\*(.*?)\*\*/g, "$1");
-              html = html.replace(/_(.*?)_/g, "<em>$1</em>");
-              html = html.replace(/@(\w+)/g, '<a href="https://x.com/$1" style="color:#0099ff;text-decoration:none;">@$1</a>');
-              return `<p style="margin:0 0 16px;line-height:1.6;color:#e0e0e0;font-size:16px;">${html}</p>`;
-            })
-            .join("");
-
-          const substackHtml = `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#000;font-family:Inter,Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#000;">
-    <tr><td align="center" style="padding:40px 20px;">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-        <tr><td style="text-align:center;padding-bottom:30px;">
-          <h1 style="margin:0;font-family:Montserrat,Arial,sans-serif;font-size:28px;font-weight:900;color:#fff;">
-            <span style="color:#0099ff;">Autonomous</span> Capitalism
-          </h1>
-          <p style="margin:8px 0 0;font-size:12px;color:#888;letter-spacing:2px;text-transform:uppercase;">DAILY AUTONOMOUS BRIEFINGS</p>
-        </td></tr>
-        <tr><td style="border-top:2px solid #0099ff;padding-top:30px;">
-          <h2 style="margin:0 0 20px;font-family:Montserrat,Arial,sans-serif;font-size:24px;font-weight:900;color:#fff;line-height:1.2;">
-            ${title}
-          </h2>
-          ${contentHtml}
-        </td></tr>
-        <tr><td style="padding-top:30px;text-align:center;">
-          <a href="${siteUrl}" style="display:inline-block;background:#0099ff;color:#000;font-weight:bold;font-size:14px;padding:12px 28px;text-decoration:none;letter-spacing:1px;">
-            READ ON SITE
-          </a>
-        </td></tr>
-        <tr><td style="padding-top:40px;border-top:1px solid #222;margin-top:40px;text-align:center;">
-          <p style="margin:20px 0 0;font-size:12px;color:#666;">
-            Autonomous Capitalism is part of <a href="https://lazyfounderventures.com" style="color:#0099ff;text-decoration:none;">Lazy Founder Ventures</a>
-          </p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
-
-          const substackRes = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${LOVABLE_API_KEY}`,
-              "X-Connection-Api-Key": RESEND_API_KEY,
-            },
-            body: JSON.stringify({
-              from: "Autonomous Capitalism <dispatch@autonomouscapitalism.com>",
-              to: [substackEmail],
-              subject: title,
-              html: substackHtml,
-            }),
-          });
-          const substackData = await substackRes.json();
-          console.log("Substack email result:", JSON.stringify(substackData));
-        }
-      } catch (e) {
-        console.error("Failed to send to Substack (non-fatal):", e);
-      }
-    }
-
     console.log(`Daily blog post generated from ${tweets.length} tweets`);
     return new Response(
-      JSON.stringify({ message: "Blog post generated, dispatched, and sent to Substack", title, tweet_count: tweets.length, image_url: imageUrl }),
+      JSON.stringify({ message: "Blog post generated and dispatched", title, tweet_count: tweets.length, image_url: imageUrl }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
