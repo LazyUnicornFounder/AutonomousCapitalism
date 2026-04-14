@@ -57,7 +57,7 @@ const Blog = () => {
         </div>
       </section>
 
-      <main className="container py-8 px-4 max-w-3xl mx-auto">
+      <main className="container py-8 px-4 max-w-6xl mx-auto">
         {isLoading && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
