@@ -1,0 +1,4 @@
+UPDATE blog_posts 
+SET title = 'Self-servicing fleets herald the autonomous economy',
+    content = E'The robotic arm didn\'t just reach into the Cybercab; it reached into the future of urban maintenance. Today\'s leaked footage of automated service depots\u2014where external vacuum heads and brushes autonomously scrub interiors between rides\u2014signals a pivot from autonomous driving as a novelty to autonomous logistics as an industrial reality. We are moving past the era of the \u201cdriverless car\u201d and into the era of the \u201cself-servicing fleet,\u201d where human hands never touch the steering wheel or the upholstery.\n\n' || content
+WHERE id = 'da6a57d9-732d-4cc8-a733-db24a0fd1a3d';
