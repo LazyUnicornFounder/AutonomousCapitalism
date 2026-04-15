@@ -11,11 +11,13 @@ import Subscribe from "./pages/Subscribe.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Ideas from "./pages/Ideas.tsx";
 import About from "./pages/About.tsx";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -36,6 +38,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+    </ErrorBoundary>
 );
 
 export default App;
