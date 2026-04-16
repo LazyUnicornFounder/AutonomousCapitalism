@@ -130,26 +130,37 @@ const IdeaLandingHero = ({ idea, index }: { idea: Idea; index: number }) => {
 
   const meta = (
     <div
-      className="mt-8 pt-6 flex items-center gap-3 text-xs flex-wrap"
+      className="mt-6 pt-5 flex flex-col gap-3 text-xs w-full"
       style={{ borderTop: `1px solid ${palette.muted}30`, color: palette.muted, fontFamily: fonts.body }}
     >
-      <span>{format(new Date(idea.date), "MMM d, yyyy")}</span>
-      <span>·</span>
-      <Link
-        to={`/briefings/${idea.postId}`}
-        className="hover:underline"
-        style={{ color: palette.accent }}
-      >
-        Source briefing →
-      </Link>
-      {idea.links.slice(0, 1).map((l, i) => (
-        <span key={i} className="flex items-center gap-2">
-          <span>·</span>
-          <a href={l.url} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: palette.accent }}>
-            {l.label}
-          </a>
-        </span>
-      ))}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span>{format(new Date(idea.date), "MMM d, yyyy")}</span>
+        <span>·</span>
+        <Link
+          to={`/briefings/${idea.postId}`}
+          className="hover:underline"
+          style={{ color: palette.accent }}
+        >
+          Source briefing →
+        </Link>
+      </div>
+      {idea.links.length > 0 && (
+        <div className="flex items-start gap-2 flex-wrap">
+          <span className="uppercase tracking-wider opacity-70 mt-0.5">Tweets:</span>
+          {idea.links.map((l, i) => (
+            <a
+              key={i}
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline px-2 py-0.5"
+              style={{ color: palette.accent, border: `1px solid ${palette.accent}40` }}
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 
