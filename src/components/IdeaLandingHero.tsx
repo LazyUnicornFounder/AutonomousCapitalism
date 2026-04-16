@@ -102,31 +102,6 @@ const IdeaLandingHero = ({ idea, index }: { idea: Idea; index: number }) => {
     </div>
   );
 
-  const headline = (
-    <h2
-      className="font-black leading-[0.95] tracking-tight mb-5"
-      style={{
-        fontFamily: fonts.display,
-        color: palette.fg,
-        fontSize: "clamp(2.25rem, 6vw, 4.5rem)",
-      }}
-    >
-      {idea.name}
-    </h2>
-  );
-
-  const sub = (
-    <p
-      className="mb-8 leading-relaxed max-w-xl"
-      style={{
-        fontFamily: fonts.body,
-        color: palette.muted,
-        fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
-      }}
-    >
-      {subheadline}
-    </p>
-  );
 
   const meta = (
     <div
