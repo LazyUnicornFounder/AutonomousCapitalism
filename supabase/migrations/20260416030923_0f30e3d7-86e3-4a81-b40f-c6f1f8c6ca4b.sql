@@ -1,0 +1,1 @@
+UPDATE blog_posts SET title = 'Machine intelligence moves from sandbox to street' WHERE id = 'b8820efa-34c6-43fa-a8be-704d1a294e11';
