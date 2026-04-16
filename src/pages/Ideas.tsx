@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { Loader2, Lightbulb, Copy, Check } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import EmailCapture from "@/components/EmailCapture";
 import NavHeader from "@/components/NavHeader";
+import IdeaLandingHero from "@/components/IdeaLandingHero";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-import { toast } from "sonner";
 
 type BlogPost = {
   id: string;
