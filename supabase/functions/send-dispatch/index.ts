@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
         </td></tr>
         <tr><td style="border-top:2px solid #0099ff;padding-top:30px;">
           <h2 style="margin:0 0 20px;font-family:Montserrat,Arial,sans-serif;font-size:24px;font-weight:900;color:#fff;line-height:1.2;">
-            ${post.title}
+            ${post.title.split(/\s+/).slice(0, 10).join(" ")}
           </h2>
           <p style="margin:0 0 24px;font-size:12px;color:#888;letter-spacing:1px;">
             ${post.tweet_count} X POSTS ANALYZED
