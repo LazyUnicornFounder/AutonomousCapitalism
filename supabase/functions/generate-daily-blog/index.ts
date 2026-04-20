@@ -244,6 +244,51 @@ Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily
       title = titleWords.slice(0, 10).join(" ");
     }
     const body = lines.slice(1).join("\n").trim();
+
+    // Similarity check vs recent headlines (Jaccard on meaningful words); rewrite if too similar
+    const STOP = new Set(["the","a","an","is","are","of","to","in","on","and","or","for","with","by","at","as","its","it","this","that","be","from","into","over","new","how","why","but","not","now","up","out","off"]);
+    const tokens = (s: string) => new Set(
+      s.toLowerCase().replace(/[^\w\s'-]/g, " ").split(/\s+/).filter((w) => w && !STOP.has(w) && w.length > 2)
+    );
+    const similarity = (a: string, b: string) => {
+      const A = tokens(a), B = tokens(b);
+      if (!A.size || !B.size) return 0;
+      let inter = 0;
+      for (const w of A) if (B.has(w)) inter++;
+      return inter / Math.min(A.size, B.size);
+    };
+    const tooSimilar = (recentPosts || []).find((p: any) => similarity(title, p.title) >= 0.5);
+    if (tooSimilar) {
+      console.warn(`Headline "${title}" too similar to recent "${tooSimilar.title}" — requesting rewrite`);
+      try {
+        const rewriteRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${lovableKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "google/gemini-3-flash-preview",
+            messages: [
+              { role: "system", content: `Rewrite the given headline so it is substantially different from ALL of these recent headlines (different subject, verb, and framing; do not share 3+ meaningful words with any). Max 10 words. No periods. No markdown. Reply with ONLY the new headline text.\n\nRecent headlines:\n${recentTitles}` },
+              { role: "user", content: `Original headline: ${title}\n\nArticle opening: ${body.substring(0, 600)}` },
+            ],
+          }),
+        });
+        if (rewriteRes.ok) {
+          const rd = await rewriteRes.json();
+          const raw = (rd.choices?.[0]?.message?.content || "").trim().split("\n")[0];
+          const newTitle = raw.replace(/^#+\s*/, "").replace(/^["*]+|["*.]+$/g, "").trim();
+          if (newTitle) {
+            const nw = newTitle.split(/\s+/);
+            title = nw.length > 10 ? nw.slice(0, 10).join(" ") : newTitle;
+            console.log(`Rewritten headline: "${title}"`);
+          }
+        } else {
+          console.error("Rewrite failed (non-fatal):", rewriteRes.status);
+        }
+      } catch (e) {
+        console.error("Rewrite error (non-fatal):", e);
+      }
+    }
+
     const summary = body.substring(0, 300).replace(/\n/g, " ").trim() + "…";
 
     // Generate business ideas (stored in content but only shown on Ideas page)
