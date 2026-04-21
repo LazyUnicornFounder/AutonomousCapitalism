@@ -177,6 +177,17 @@ Deno.serve(async (req) => {
       .join("\n");
     console.log(`Loaded ${recentPosts?.length || 0} recent headlines for de-duplication`);
 
+    // Extract forbidden subject keywords (proper nouns + meaningful nouns) from recent headlines
+    const STOPWORDS_SUBJ = new Set(["the","a","an","is","are","of","to","in","on","and","or","for","with","by","at","as","its","it","this","that","be","from","into","over","new","how","why","but","not","now","up","out","off","you","your","our","we","they","them","their","has","have","had","was","were","will","can","could","should","would","may","might","than","then","so","if","about","after","before","while","when","where","who","what","which","there","here","just","also","more","most","some","any","all","one","two","three","first","last","next","each","other","another","such","only","own","same","very","still","ever","never","once","again","like","make","made","get","got","take","took","go","went","come","came","see","saw","say","said","told","tell","know","knew","think","thought","starts","starting","began","begin","begins","starts","start","starting","ends","end","ending","continues","continue","continuing","says","saying","gets","getting","makes","making","goes","going","comes","coming","sees","seeing","tells","telling","thinks","thinking","becomes","became","becoming","keeps","keeping","kept","puts","putting","put","let","lets","letting","yet","much","many","few","fewer","less","lot","lots","big","small","high","low","old"]);
+    const extractSubjects = (s: string) =>
+      s.replace(/[^\w\s'-]/g, " ").split(/\s+/).filter((w) => w && w.length > 2 && !STOPWORDS_SUBJ.has(w.toLowerCase()));
+    const recentSubjectSet = new Set<string>();
+    for (const p of recentPosts || []) {
+      for (const w of extractSubjects(p.title)) recentSubjectSet.add(w.toLowerCase());
+    }
+    const forbiddenSubjects = Array.from(recentSubjectSet).sort();
+    console.log(`Forbidden subject keywords (${forbiddenSubjects.length}): ${forbiddenSubjects.slice(0, 40).join(", ")}...`);
+
     // Build tweet digest for AI
     const tweetDigest = tweets
       .map(
@@ -210,8 +221,11 @@ Format:
 - Use markdown for bold and italic emphasis
 - IMPORTANT: Do NOT start the article by talking about chatbots. Vary your opening — lead with the most compelling or surprising theme of the day, not a generic chatbot reference.
 
-RECENT HEADLINES TO AVOID DUPLICATING (your headline must be substantially different — different subject, different verb, different framing; do not share 3+ meaningful words with any of these; avoid recurring openers like "Machines are…", "AI is…", "The robots…"):
+RECENT HEADLINES TO AVOID DUPLICATING (your headline must cover a DIFFERENT STORY — different company, different person, different event, different topic; do not share 3+ meaningful words with any of these; avoid recurring openers like "Machines are…", "AI is…", "The robots…"):
 ${recentTitles || "(none yet)"}
+
+FORBIDDEN SUBJECT KEYWORDS (these proper nouns / topic words appeared in recent headlines — your headline MUST NOT contain ANY of these words; pick a completely different story from today's tweets):
+${forbiddenSubjects.join(", ") || "(none yet)"}
 
 Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily column readers look forward to.`,
             },
@@ -257,9 +271,16 @@ Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily
       for (const w of A) if (B.has(w)) inter++;
       return inter / Math.min(A.size, B.size);
     };
-    const tooSimilar = (recentPosts || []).find((p: any) => similarity(title, p.title) >= 0.5);
-    if (tooSimilar) {
-      console.warn(`Headline "${title}" too similar to recent "${tooSimilar.title}" — requesting rewrite`);
+    const titleSubjectsLower = extractSubjects(title).map((w) => w.toLowerCase());
+    let overlapSubject = titleSubjectsLower.find((w) => recentSubjectSet.has(w));
+    let tooSimilar = (recentPosts || []).find((p: any) => similarity(title, p.title) >= 0.5);
+    let rewriteAttempts = 0;
+    while ((tooSimilar || overlapSubject) && rewriteAttempts < 3) {
+      rewriteAttempts++;
+      const reason = overlapSubject
+        ? `contains forbidden subject "${overlapSubject}" already used in recent headlines`
+        : `too similar to recent "${tooSimilar.title}"`;
+      console.warn(`Headline "${title}" ${reason} — requesting rewrite (attempt ${rewriteAttempts})`);
       try {
         const rewriteRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
           method: "POST",
@@ -267,25 +288,28 @@ Do NOT list tweets. Do NOT use @handles. Tell a STORY. Make it feel like a daily
           body: JSON.stringify({
             model: "google/gemini-3-flash-preview",
             messages: [
-              { role: "system", content: `Rewrite the given headline so it is substantially different from ALL of these recent headlines (different subject, verb, and framing; do not share 3+ meaningful words with any). Max 10 words. No periods. No markdown. Reply with ONLY the new headline text.\n\nRecent headlines:\n${recentTitles}` },
-              { role: "user", content: `Original headline: ${title}\n\nArticle opening: ${body.substring(0, 600)}` },
+              { role: "system", content: `Rewrite the given headline so it covers a COMPLETELY DIFFERENT STORY than these recent headlines. Different company, person, event, and topic. Max 10 words. No periods. No markdown. Reply with ONLY the new headline text.\n\nRecent headlines:\n${recentTitles}\n\nFORBIDDEN WORDS (do NOT use ANY of these): ${forbiddenSubjects.join(", ")}\n\nPick a different angle from the article body — focus on a subject NOT in the forbidden list.` },
+              { role: "user", content: `Original headline: ${title}\n\nArticle opening: ${body.substring(0, 800)}` },
             ],
           }),
         });
-        if (rewriteRes.ok) {
-          const rd = await rewriteRes.json();
-          const raw = (rd.choices?.[0]?.message?.content || "").trim().split("\n")[0];
-          const newTitle = raw.replace(/^#+\s*/, "").replace(/^["*]+|["*.]+$/g, "").trim();
-          if (newTitle) {
-            const nw = newTitle.split(/\s+/);
-            title = nw.length > 10 ? nw.slice(0, 10).join(" ") : newTitle;
-            console.log(`Rewritten headline: "${title}"`);
-          }
-        } else {
+        if (!rewriteRes.ok) {
           console.error("Rewrite failed (non-fatal):", rewriteRes.status);
+          break;
         }
+        const rd = await rewriteRes.json();
+        const raw = (rd.choices?.[0]?.message?.content || "").trim().split("\n")[0];
+        const newTitle = raw.replace(/^#+\s*/, "").replace(/^["*]+|["*.]+$/g, "").trim();
+        if (!newTitle) break;
+        const nw = newTitle.split(/\s+/);
+        title = nw.length > 10 ? nw.slice(0, 10).join(" ") : newTitle;
+        console.log(`Rewritten headline (attempt ${rewriteAttempts}): "${title}"`);
+        const newSubjects = extractSubjects(title).map((w) => w.toLowerCase());
+        overlapSubject = newSubjects.find((w) => recentSubjectSet.has(w));
+        tooSimilar = (recentPosts || []).find((p: any) => similarity(title, p.title) >= 0.5);
       } catch (e) {
         console.error("Rewrite error (non-fatal):", e);
+        break;
       }
     }
 
