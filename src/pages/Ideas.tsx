@@ -90,7 +90,7 @@ const Ideas = () => {
             <span className="text-primary">Autonomous</span> Business Ideas
           </h1>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed max-w-lg mx-auto">
-            A bespoke landing page for every AI-generated venture concept. Sign up to be notified when one launches.
+            AI-generated venture concepts surfaced from each daily briefing.
           </p>
         </div>
       </section>
