@@ -36,7 +36,7 @@ const PortfolioFooter = () => (
       <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground/40">
         <a href="https://lazyfounderventures.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Portfolio</a>
         <a href="https://github.com/LazyUnicornFounder" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
-        <a href="https://x.com/SoloUnicorn" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Twitter/X</a>
+        <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7448781743005782016" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">LinkedIn</a>
       </div>
     </div>
   </footer>
