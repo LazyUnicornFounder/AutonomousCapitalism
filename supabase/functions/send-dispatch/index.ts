@@ -81,8 +81,6 @@ Deno.serve(async (req) => {
         let html = p.replace(/\*\*(.*?)\*\*/g, "$1");
         // Italic
         html = html.replace(/_(.*?)_/g, "<em>$1</em>");
-        // @handles as links
-        html = html.replace(/@(\w+)/g, '<a href="https://x.com/$1" style="color:#0099ff;text-decoration:none;">@$1</a>');
         return `<p style="margin:0 0 16px;line-height:1.6;color:#e0e0e0;font-size:16px;">${html}</p>`;
       })
       .join("");
@@ -108,7 +106,7 @@ Deno.serve(async (req) => {
             ${post.title.split(/\s+/).slice(0, 10).join(" ")}
           </h2>
           <p style="margin:0 0 24px;font-size:12px;color:#888;letter-spacing:1px;">
-            ${post.tweet_count} X POSTS ANALYZED
+            ${post.tweet_count} HEADLINES ANALYZED
           </p>
           ${contentHtml}
         </td></tr>

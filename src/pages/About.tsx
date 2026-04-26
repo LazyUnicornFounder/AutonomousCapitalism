@@ -37,11 +37,11 @@ const About = () => {
             <div className="space-y-4">
               <div className="flex gap-4">
                 <span className="text-primary font-display font-black text-lg shrink-0">01</span>
-                <p className="text-foreground/80 font-body">AI scans hundreds of X posts daily about autonomous systems, agents, and machine economics.</p>
+                <p className="text-foreground/80 font-body">AI scans hundreds of headlines daily from Hacker News, Google News, and Reddit about autonomous systems, agents, and machine economics.</p>
               </div>
               <div className="flex gap-4">
                 <span className="text-primary font-display font-black text-lg shrink-0">02</span>
-                <p className="text-foreground/80 font-body">The most engaging posts are synthesized into a narrative-driven briefing — no lists, no fluff.</p>
+                <p className="text-foreground/80 font-body">The most engaging stories are synthesized into a narrative-driven briefing — no lists, no fluff.</p>
               </div>
               <div className="flex gap-4">
                 <span className="text-primary font-display font-black text-lg shrink-0">03</span>

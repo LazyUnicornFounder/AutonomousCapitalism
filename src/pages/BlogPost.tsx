@@ -58,26 +58,13 @@ const renderMarkdown = (text: string) => {
     }
 
     // Process inline formatting
-    const parts = p.split(/(\*\*.*?\*\*|_.*?_|@\w+)/g);
+    const parts = p.split(/(\*\*.*?\*\*|_.*?_)/g);
     const rendered = parts.map((part, j) => {
       if (part.startsWith("**") && part.endsWith("**")) {
         return <span key={j}>{part.slice(2, -2)}</span>;
       }
       if (part.startsWith("_") && part.endsWith("_")) {
         return <em key={j}>{part.slice(1, -1)}</em>;
-      }
-      if (part.startsWith("@")) {
-        return (
-          <a
-            key={j}
-            href={`https://x.com/${part.slice(1)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            {part}
-          </a>
-        );
       }
       return part;
     });
@@ -125,7 +112,7 @@ const BlogPost = () => {
                 {format(new Date(post.published_date), "MMMM d, yyyy")}
               </span>
               <span className="text-xs text-muted-foreground font-body">
-                · {post.tweet_count} X posts analyzed
+                · {post.tweet_count} headlines analyzed
               </span>
             </div>
 

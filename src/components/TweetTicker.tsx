@@ -24,7 +24,7 @@ const highlightAutonomous = (text: string) => {
 
 const TickerCard = ({ tweet }: { tweet: Tweet }) => {
   const handleUsername = tweet.handle.replace("@", "");
-  const tweetUrl = tweet.url || `https://x.com/${handleUsername}/status/${tweet.id}`;
+  const tweetUrl = tweet.url || "#";
 
   return (
     <a
