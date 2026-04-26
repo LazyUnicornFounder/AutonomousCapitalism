@@ -7,14 +7,14 @@ import type { Tweet } from "@/data/tweets";
 import OpenSourceBanner from "@/components/OpenSourceBanner";
 import PortfolioFooter from "@/components/PortfolioFooter";
 
-const fetchTweets = async (): Promise<Tweet[]> => {
-  const { data, error } = await supabase.functions.invoke("twitter-search", {
+const fetchNews = async (): Promise<Tweet[]> => {
+  const { data, error } = await supabase.functions.invoke("news-feed", {
     body: null,
     method: "GET",
   });
 
   if (error) throw error;
-  return data?.tweets || [];
+  return data?.items || data?.tweets || [];
 };
 
 const formatTimestamp = (ts: string) => {
@@ -30,8 +30,8 @@ const formatTimestamp = (ts: string) => {
 
 const Index = () => {
   const { data: liveTweets, isLoading, isError } = useQuery({
-    queryKey: ["tweets", "autonomous"],
-    queryFn: fetchTweets,
+    queryKey: ["news", "autonomous"],
+    queryFn: fetchNews,
     refetchInterval: 60000,
   });
 

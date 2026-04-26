@@ -10,6 +10,7 @@ export type Tweet = {
   retweets: number;
   replies: number;
   verified: boolean;
+  url?: string;
 };
 
 export const tweets: Tweet[] = [
