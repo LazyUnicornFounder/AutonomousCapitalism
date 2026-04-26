@@ -119,21 +119,21 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Fetch tweets with pagination
-    console.log("Fetching all tweets for blog generation...");
-    const tweets = await fetchAllTweets(bearerToken, "autonomous", 200);
+    // Fetch news items from aggregated keyless sources (HN, Google News, Reddit)
+    console.log("Fetching news items for blog generation...");
+    const tweets = await fetchAllItems(supabaseUrl, serviceKey);
 
     if (tweets.length === 0) {
       return new Response(
-        JSON.stringify({ message: "No tweets found to summarize" }),
+        JSON.stringify({ message: "No news items found to summarize" }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log(`Collected ${tweets.length} tweets, generating blog...`);
+    console.log(`Collected ${tweets.length} news items, generating blog...`);
 
-    // Sort by engagement
-    tweets.sort((a, b) => (b.likes + b.retweets) - (a.likes + a.retweets));
+    // Sort by engagement (HN points + comments / Reddit score + comments)
+    tweets.sort((a: any, b: any) => (b.likes + b.retweets) - (a.likes + a.retweets));
 
     // Fetch recent headlines to avoid similarity
     const { data: recentPosts } = await supabase
@@ -157,11 +157,11 @@ Deno.serve(async (req) => {
     const forbiddenSubjects = Array.from(recentSubjectSet).sort();
     console.log(`Forbidden subject keywords (${forbiddenSubjects.length}): ${forbiddenSubjects.slice(0, 40).join(", ")}...`);
 
-    // Build tweet digest for AI
+    // Build news digest for AI (real article URLs, not X)
     const tweetDigest = tweets
       .map(
         (t: any, i: number) =>
-          `${i + 1}. ${t.author} (${t.handle}): "${t.text}" [${t.likes} likes, ${t.retweets} RTs] URL: https://x.com/${t.username}/status/${t.id}`
+          `${i + 1}. ${t.author} (${t.handle}): "${t.text}" [${t.likes} pts, ${t.retweets} comments] URL: ${t.url}`
       )
       .join("\n");
 
