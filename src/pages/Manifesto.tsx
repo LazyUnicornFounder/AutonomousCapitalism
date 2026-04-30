@@ -141,26 +141,26 @@ const CostCurve = () => {
       <div className="h-[360px] w-full border border-foreground/30 bg-background p-4">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 10 }}>
-            <CartesianGrid stroke="#000" strokeOpacity={0.1} vertical={false} />
+            <CartesianGrid stroke="#fff" strokeOpacity={0.1} vertical={false} />
             <XAxis
               dataKey="month"
-              stroke="#000"
-              tick={{ fill: "#000", fontSize: 11, fontFamily: "ui-monospace,monospace" }}
+              stroke="#fff"
+              tick={{ fill: "#fff", fontSize: 11, fontFamily: "ui-monospace,monospace" }}
               tickLine={false}
-              axisLine={{ stroke: "#000" }}
-              label={{ value: "MONTH", position: "insideBottom", offset: -2, fill: "#000", fontSize: 10 }}
+              axisLine={{ stroke: "#fff" }}
+              label={{ value: "MONTH", position: "insideBottom", offset: -2, fill: "#fff", fontSize: 10 }}
             />
             <YAxis
-              stroke="#000"
-              tick={{ fill: "#000", fontSize: 11, fontFamily: "ui-monospace,monospace" }}
+              stroke="#fff"
+              tick={{ fill: "#fff", fontSize: 11, fontFamily: "ui-monospace,monospace" }}
               tickLine={false}
-              axisLine={{ stroke: "#000" }}
+              axisLine={{ stroke: "#fff" }}
               tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
             />
             <Tooltip
               contentStyle={{
-                background: "#fff",
-                border: "1px solid #000",
+                background: "#000",
+                border: "1px solid #fff",
                 borderRadius: 0,
                 fontFamily: "ui-monospace,monospace",
                 fontSize: 11,
@@ -168,10 +168,10 @@ const CostCurve = () => {
               formatter={(v: number) => `$${v.toLocaleString()}`}
               labelFormatter={(l) => `Month ${l}`}
             />
-            <Line type="monotone" dataKey="opex" stroke="#000" strokeWidth={2} dot={false} name="OPEX" />
+            <Line type="monotone" dataKey="opex" stroke="#fff" strokeWidth={2} dot={false} name="OPEX" />
             <Line type="monotone" dataKey="mrr" stroke={BLUE} strokeWidth={2} dot={false} name="MRR" />
             {crossover && (
-              <ReferenceDot x={crossover.month} y={crossover.mrr} r={6} fill={BLUE} stroke="#000" strokeWidth={1} />
+              <ReferenceDot x={crossover.month} y={crossover.mrr} r={6} fill={BLUE} stroke="#fff" strokeWidth={1} />
             )}
           </LineChart>
         </ResponsiveContainer>
@@ -213,7 +213,7 @@ const TimelineBlock = () => (
           >
             <div
               className="absolute left-0 top-[34px] h-3 w-3"
-              style={{ background: m.isToday ? BLUE : "#000" }}
+              style={{ background: m.isToday ? BLUE : "#fff" }}
             />
             {m.isToday && (
               <div
@@ -249,7 +249,7 @@ const TimelineBlock = () => (
         <div key={i} className="relative border-l-2 border-foreground/30 pl-5">
           <div
             className="absolute -left-[7px] top-1 h-3 w-3"
-            style={{ background: m.isToday ? BLUE : "#000" }}
+            style={{ background: m.isToday ? BLUE : "#fff" }}
           />
           {m.isToday && (
             <div
